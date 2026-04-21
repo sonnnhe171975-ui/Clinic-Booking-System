@@ -1,0 +1,258 @@
+{
+  "specialties": [
+    {
+      "id": "1",
+      "name": "Noi tong quat",
+      "description": "Kham benh noi khoa co ban va theo doi suc khoe tong quat"
+    },
+    {
+      "id": "2",
+      "name": "Nhi khoa",
+      "description": "Kham, tu van va theo doi suc khoe cho tre em"
+    },
+    {
+      "id": "3",
+      "name": "Da lieu",
+      "description": "Chan doan va dieu tri cac benh ly da lieu"
+    },
+    {
+      "id": "4",
+      "name": "Tim mach",
+      "description": "Kham tim mach, huyet ap va tu van phong ngua dot quy"
+    }
+  ],
+  "doctors": [
+    {
+      "id": "1",
+      "name": "BS Nguyen Van Chien",
+      "specialtyId": 1,
+      "experience": 12,
+      "bio": "Chuyen gia noi tong quat, theo doi benh man tinh",
+      "gender": "male",
+      "degree": "Thac si - Bac si",
+      "email": "nguyenvana@clinicbooking.vn",
+      "phone": "0905123456",
+      "address": "123 Le Duan, Hai Chau, Da Nang",
+      "hospital": "Clinic Booking Medical Center"
+    },
+    {
+      "id": "2",
+      "name": "BS Tran Thi Anh",
+      "specialtyId": 2,
+      "experience": 8,
+      "bio": "Bac si nhi khoa, tu van dinh duong cho tre",
+      "gender": "female",
+      "degree": "Bac si Chuyen khoa I",
+      "email": "tranthib@clinicbooking.vn",
+      "phone": "0905345678",
+      "address": "88 Nguyen Van Linh, Da Nang",
+      "hospital": "Clinic Booking Medical Center"
+    },
+    {
+      "id": "3",
+      "name": "BS Le Van Cung",
+      "specialtyId": 3,
+      "experience": 10,
+      "bio": "Bac si da lieu, dieu tri mun va viem da co dia",
+      "gender": "male",
+      "degree": "Thac si Da lieu",
+      "email": "levanc@clinicbooking.vn",
+      "phone": "0905789012",
+      "address": "45 Phan Chau Trinh, Da Nang",
+      "hospital": "Clinic Booking Medical Center"
+    },
+    {
+      "id": "4",
+      "name": "BS Pham Minh Duong",
+      "specialtyId": 4,
+      "experience": 15,
+      "bio": "Bac si tim mach, theo doi benh tim mach nguoi cao tuoi",
+      "gender": "male",
+      "degree": "Tien si - Bac si",
+      "email": "phamminhd@clinicbooking.vn",
+      "phone": "0905456789",
+      "address": "10 Hoang Dieu, Da Nang",
+      "hospital": "Clinic Booking Medical Center"
+    }
+  ],
+  "schedules": [
+    {
+      "id": "1",
+      "doctorId": 1,
+      "date": "2026-04-15",
+      "time": "07:00-10:00",
+      "maxSlot": 3,
+      "currentSlot": 1,
+      "status": "available",
+      "room": "A101",
+      "fee": 250000
+    },
+    {
+      "id": "2",
+      "doctorId": 1,
+      "date": "2026-04-15",
+      "time": "10:00-12:20",
+      "maxSlot": 2,
+      "currentSlot": 2,
+      "status": "full",
+      "room": "A101",
+      "fee": 250000
+    },
+    {
+      "id": "3",
+      "doctorId": 2,
+      "date": "2026-04-16",
+      "time": "12:50-15:00",
+      "maxSlot": 4,
+      "currentSlot": 0,
+      "status": "available",
+      "room": "B204",
+      "fee": 220000
+    },
+    {
+      "id": "4",
+      "doctorId": 3,
+      "date": "2026-04-17",
+      "time": "15:30-17:40",
+      "maxSlot": 2,
+      "currentSlot": 1,
+      "status": "available",
+      "room": "C302",
+      "fee": 300000
+    },
+    {
+      "id": "5",
+      "doctorId": 4,
+      "date": "2026-04-18",
+      "time": "07:00-10:00",
+      "maxSlot": 5,
+      "currentSlot": 2,
+      "status": "available",
+      "room": "D110",
+      "fee": 350000
+    },
+    {
+      "id": "6",
+      "doctorId": 1,
+      "date": "2026-04-22",
+      "time": "12:50-15:00",
+      "maxSlot": 4,
+      "currentSlot": 2,
+      "status": "available",
+      "room": "A102",
+      "fee": 250000
+    },
+    {
+      "id": "7",
+      "doctorId": 1,
+      "date": "2026-04-29",
+      "time": "15:30-17:40",
+      "maxSlot": 3,
+      "currentSlot": 1,
+      "status": "available",
+      "room": "A103",
+      "fee": 250000
+    },
+    {
+      "id": "8",
+      "doctorId": 2,
+      "date": "2026-04-23",
+      "time": "07:00-10:00",
+      "maxSlot": 4,
+      "currentSlot": 3,
+      "status": "available",
+      "room": "B205",
+      "fee": 220000
+    },
+    {
+      "id": "9",
+      "doctorId": 2,
+      "date": "2026-04-30",
+      "time": "10:00-12:20",
+      "maxSlot": 4,
+      "currentSlot": 4,
+      "status": "full",
+      "room": "B206",
+      "fee": 220000
+    }
+  ],
+  "appointments": [
+    {
+      "id": "1",
+      "userId": 2,
+      "doctorId": 1,
+      "scheduleId": 1,
+      "patientName": "Nguyen Van Chau",
+      "phone": "0912345678",
+      "email": "user1@gmail.com",
+      "address": "102 Ong Ich Khiem, Da Nang",
+      "note": "Kiem tra suc khoe dinh ky",
+      "createdAt": "2026-04-10T08:15:00.000Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "123456",
+      "fullName": "Nguyen Ngoc Son",
+      "role": "admin",
+      "email": "admin@clinicbooking.vn",
+      "phone": "0905000001",
+      "address": "Head Office - 123 Nguyen Van Linh, Da Nang"
+    },
+    {
+      "id": "2",
+      "username": "user1",
+      "password": "123456",
+      "fullName": "Nguyen Van Chau",
+      "role": "patient",
+      "email": "user1@gmail.com",
+      "phone": "0912345678",
+      "address": "102 Ong Ich Khiem, Hai Chau, Da Nang"
+    },
+    {
+      "id": "3",
+      "username": "tranhoa",
+      "password": "123456",
+      "fullName": "Tran Thi Hoa",
+      "role": "patient",
+      "email": "tranhoa@gmail.com",
+      "phone": "0935123456",
+      "address": "59 Le Loi, Thanh Khe, Da Nang"
+    },
+    {
+      "id": "4",
+      "username": "phamkhanh",
+      "password": "123456",
+      "fullName": "Pham Quoc Khanh",
+      "role": "patient",
+      "email": "phamkhanh@gmail.com",
+      "phone": "0987654321",
+      "address": "14 Ton Duc Thang, Lien Chieu, Da Nang"
+    },
+    {
+      "id": "5",
+      "username": "doctor1",
+      "password": "123456",
+      "fullName": "BS Nguyen Van Chien",
+      "role": "doctor",
+      "doctorId": 1,
+      "email": "nguyenvana@clinicbooking.vn",
+      "phone": "0905123456",
+      "address": "123 Le Duan, Hai Chau, Da Nang"
+    },
+    {
+      "id": "6",
+      "username": "doctor2",
+      "password": "123456",
+      "fullName": "BS Tran Thi Anh",
+      "role": "doctor",
+      "doctorId": 2,
+      "email": "tranthib@clinicbooking.vn",
+      "phone": "0905345678",
+      "address": "88 Nguyen Van Linh, Da Nang"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  --med-primary: #1977cc;
+  --med-primary-soft: #e8f1fa;
+  --med-heading: #2c4964;
+  --med-text: #444444;
+  --med-bg: #f1f7fc;
+}
+
+body {
+  font-family: 'Roboto', system-ui, sans-serif;
+  color: var(--med-text);
+  background: var(--med-bg);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand {
+  font-family: 'Poppins', sans-serif;
+  color: var(--med-heading);
+}
+
+.medilab-page {
+  padding-bottom: 2rem;
+}
+
+.medilab-hero {
+  background: linear-gradient(130deg, rgba(25, 119, 204, 0.9), rgba(17, 88, 153, 0.9));
+  color: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 10px 30px rgba(25, 119, 204, 0.2);
+}
+
+.medilab-hero h2,
+.medilab-hero p {
+  color: #fff;
+}
+
+.med-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.med-card:hover {
+  transform: translateY(-4px);
+  transition: 0.25s ease;
+}
+
+.btn-primary {
+  background-color: var(--med-primary);
+  border-color: var(--med-primary);
+}
+
+.btn-outline-primary {
+  color: var(--med-primary);
+  border-color: var(--med-primary);
+}
+
+.table thead th {
+  background: #f8fbff;
+  color: var(--med-heading);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #7fb6e7;
+  box-shadow: 0 0 0 0.2rem rgba(25, 119, 204, 0.15);
+}
+
+.login-screen {
+  min-height: 100vh;
+  background: linear-gradient(130deg, #f1f7fc 0%, #e8f1fa 45%, #dceefe 100%);
+}
+
+.login-visual-card {
+  min-height: 540px;
+  border-radius: 18px;
+}
+
+.login-visual-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 540px;
+}
+
+.login-visual-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(25, 119, 204, 0.1) 10%,
+    rgba(10, 46, 77, 0.85) 100%
+  );
+}
+
+.login-form-card {
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(30, 80, 128, 0.15);
+}
+
+.dashboard-shell {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 1rem;
+}
+
+.dashboard-sidebar {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  position: sticky;
+  top: 1rem;
+}
+
+.dashboard-link {
+  border-radius: 8px;
+  color: #355570;
+}
+
+.dashboard-link.active {
+  background: var(--med-primary-soft);
+  color: var(--med-primary);
+  font-weight: 600;
+}
+
+.dashboard-main {
+  min-width: 0;
+}
+
+.dashboard-header,
+.dashboard-content,
+.dashboard-footer {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-header {
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-content {
+  padding: 1rem;
+}
+
+.dashboard-footer {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+}
+
+.home-slider-image {
+  height: 360px;
+  object-fit: contain;
+  background: #e9f2fb;
+}
+
+.app-footer {
+  background: #ffffff;
+  border-top: 1px solid #e6eef5;
+}
+
+@media (max-width: 992px) {
+  .dashboard-shell {
+    grid-template-columns: 1fr;
+  }
+}
