@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import { clearStoredUser, getStoredUser, setStoredUser } from '../utils/auth'
@@ -6,13 +6,7 @@ import { clearStoredUser, getStoredUser, setStoredUser } from '../utils/auth'
 export function useAuth() {
   const [user, setUser] = useState(getStoredUser())
 
-  const role = user?.role || 'guest'
-  const isAdmin = user?.role === 'admin'
-  const isPatient = user?.role === 'patient'
-  const isDoctor = user?.role === 'doctor'
-  const isGuest = !user
-
-  async function login(username, password) {
+  const login = useCallback(async (username, password) => {
     const safeUsername = String(username || '').trim().toLowerCase()
     const safePassword = String(password || '').trim()
 
@@ -43,15 +37,24 @@ export function useAuth() {
     setStoredUser(found)
     setUser(found)
     return found
-  }
+  }, [])
 
-  function logout() {
+  const logout = useCallback(() => {
     clearStoredUser()
     setUser(null)
-  }
+  }, [])
 
-  return useMemo(
-    () => ({ user, role, isAdmin, isPatient, isDoctor, isGuest, login, logout }),
-    [user, role, isAdmin, isPatient, isDoctor, isGuest]
-  )
+  return useMemo(() => {
+    const role = user?.role || 'guest'
+    return {
+      user,
+      role,
+      isAdmin: role === 'admin',
+      isPatient: role === 'patient',
+      isDoctor: role === 'doctor',
+      isGuest: !user,
+      login,
+      logout,
+    }
+  }, [user, login, logout])
 }

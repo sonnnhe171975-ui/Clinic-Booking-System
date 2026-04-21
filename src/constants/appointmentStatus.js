@@ -40,13 +40,6 @@ export function isTerminalAppointmentStatus(status) {
   return status === APPOINTMENT_STATUS.COMPLETED || status === APPOINTMENT_STATUS.NO_SHOW
 }
 
-/** Lịch hẹn đang chiếm suất trong ca (đồng bộ logic slot trong appointmentFlow: no_show vẫn giữ suất). */
-export function isSlotConsumingStatus(status) {
-  const s = status || APPOINTMENT_STATUS.CONFIRMED
-  if (s === APPOINTMENT_STATUS.CANCELLED || s === APPOINTMENT_STATUS.COMPLETED) return false
-  return true
-}
-
 export function canPatientCancelOrReschedule(status) {
   if (!status) return true
   return status === APPOINTMENT_STATUS.PENDING || status === APPOINTMENT_STATUS.CONFIRMED

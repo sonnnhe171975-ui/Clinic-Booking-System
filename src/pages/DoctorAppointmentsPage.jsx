@@ -10,10 +10,7 @@ import {
   isTerminalAppointmentStatus,
 } from '../constants/appointmentStatus'
 import { useAuthContext } from '../hooks/useAuthContext'
-import {
-  cancelAppointmentAndReleaseSlot,
-  updateAppointmentStatus,
-} from '../utils/appointmentFlow'
+import { applyAppointmentStatusChange, cancelAppointmentAndReleaseSlot } from '../utils/appointmentFlow'
 
 const SHIFT_OPTIONS = [
   { code: 'ca1', label: 'Ca 1', time: '07:00-10:00' },
@@ -88,25 +85,26 @@ function DoctorAppointmentsPage() {
     return doctors.find((item) => item.email === user?.email) || null
   }, [doctors, user])
 
-  const patientUserIds = useMemo(() => {
+  const patientUserIdsKey = useMemo(() => {
     const set = new Set()
     appointments
       .filter((item) => String(item.doctorId) === String(doctorProfile?.id))
       .forEach((a) => set.add(String(a.userId)))
-    return [...set]
+    return [...set].sort().join('|')
   }, [appointments, doctorProfile])
 
   useEffect(() => {
     let cancelled = false
     async function loadUsers() {
-      if (!patientUserIds.length) {
+      const ids = patientUserIdsKey ? patientUserIdsKey.split('|').filter(Boolean) : []
+      if (!ids.length) {
         if (!cancelled) setUserMap({})
         return
       }
       try {
         const allUsers = await api.get(endpoints.users)
         if (cancelled) return
-        const want = new Set(patientUserIds.map(String))
+        const want = new Set(ids)
         const m = {}
         allUsers.forEach((u) => {
           const id = String(u.id)
@@ -121,7 +119,7 @@ function DoctorAppointmentsPage() {
     return () => {
       cancelled = true
     }
-  }, [patientUserIds.join('|')])
+  }, [patientUserIdsKey])
 
   const doctorAppointments = useMemo(() => {
     return appointments
@@ -218,7 +216,7 @@ function DoctorAppointmentsPage() {
               disabled={busy}
               onClick={() =>
                 runDoctorAction(item.id, (raw) =>
-                  updateAppointmentStatus(raw, APPOINTMENT_STATUS.CONFIRMED)
+                  applyAppointmentStatusChange(raw, APPOINTMENT_STATUS.CONFIRMED)
                 )
               }
             >
@@ -242,7 +240,7 @@ function DoctorAppointmentsPage() {
               disabled={busy}
               onClick={() =>
                 runDoctorAction(item.id, (raw) =>
-                  updateAppointmentStatus(raw, APPOINTMENT_STATUS.CHECKED_IN)
+                  applyAppointmentStatusChange(raw, APPOINTMENT_STATUS.CHECKED_IN)
                 )
               }
             >
@@ -253,7 +251,7 @@ function DoctorAppointmentsPage() {
               disabled={busy}
               onClick={() =>
                 runDoctorAction(item.id, (raw) =>
-                  updateAppointmentStatus(raw, APPOINTMENT_STATUS.NO_SHOW)
+                  applyAppointmentStatusChange(raw, APPOINTMENT_STATUS.NO_SHOW)
                 )
               }
             >
@@ -276,7 +274,7 @@ function DoctorAppointmentsPage() {
             disabled={busy}
             onClick={() =>
               runDoctorAction(item.id, (raw) =>
-                updateAppointmentStatus(raw, APPOINTMENT_STATUS.COMPLETED)
+                applyAppointmentStatusChange(raw, APPOINTMENT_STATUS.COMPLETED)
               )
             }
           >

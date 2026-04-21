@@ -1,5 +1,5 @@
 import { useAuth } from './useAuth'
-import { AuthContext } from './AuthContext'
+import { AuthContext } from './useAuthContext'
 
 export function AuthProvider({ children }) {
   const auth = useAuth()

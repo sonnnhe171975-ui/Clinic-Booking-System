@@ -125,7 +125,6 @@ function main() {
       '07/2025: Khám mắt định kỳ. 01/2026: Viêm kết mạc, tra thuốc nhỏ mắt 5 ngày khỏi.'
   }
 
-  const maxExisting = Math.max(...db.users.map((u) => Number(u.id)))
   for (const p of NEW_PATIENTS) {
     if (db.users.some((u) => String(u.id) === String(p.id))) continue
     db.users.push(p)

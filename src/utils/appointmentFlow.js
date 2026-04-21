@@ -2,21 +2,18 @@ import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import { APPOINTMENT_STATUS, isTerminalAppointmentStatus } from '../constants/appointmentStatus'
 
-/**
- * Trạng thái đang tính vào currentSlot của ca.
- * Đã hủy / đã khám xong → không chiếm chỗ; không đến (no_show) vẫn giữ suất.
- */
-export function appointmentCountsTowardFilledSlots(status) {
+/** Đã hủy / đã khám xong → không chiếm chỗ; no_show vẫn giữ suất. */
+function countsTowardFilledSlots(status) {
   const s = status || APPOINTMENT_STATUS.CONFIRMED
   if (s === APPOINTMENT_STATUS.CANCELLED || s === APPOINTMENT_STATUS.COMPLETED) return false
   return true
 }
 
-export function slotDeltaForStatusChange(oldStatus, newStatus) {
+function slotDeltaForStatusChange(oldStatus, newStatus) {
   const old = oldStatus || APPOINTMENT_STATUS.CONFIRMED
   const next = newStatus
-  const a = appointmentCountsTowardFilledSlots(old) ? 1 : 0
-  const b = appointmentCountsTowardFilledSlots(next) ? 1 : 0
+  const a = countsTowardFilledSlots(old) ? 1 : 0
+  const b = countsTowardFilledSlots(next) ? 1 : 0
   return b - a
 }
 
@@ -146,17 +143,6 @@ export async function cancelAppointmentAndReleaseSlot(appt) {
     return { ok: false, error: 'Không thể hủy lịch ở trạng thái này' }
   }
   return applyAppointmentStatusChange(appt, APPOINTMENT_STATUS.CANCELLED)
-}
-
-export async function updateAppointmentStatus(appt, nextStatus) {
-  return applyAppointmentStatusChange(appt, nextStatus)
-}
-
-/**
- * Admin đổi status bất kỳ + đồng bộ currentSlot trên schedule.
- */
-export async function adminSetAppointmentStatus(appt, newStatus) {
-  return applyAppointmentStatusChange(appt, newStatus)
 }
 
 /**

@@ -9,7 +9,7 @@ import {
   APPOINTMENT_STATUS_OPTIONS,
   appointmentStatusVariant,
 } from '../constants/appointmentStatus'
-import { adminSetAppointmentStatus } from '../utils/appointmentFlow'
+import { applyAppointmentStatusChange } from '../utils/appointmentFlow'
 
 function AdminAppointmentsPage() {
   const [appointments, setAppointments] = useState([])
@@ -60,7 +60,7 @@ function AdminAppointmentsPage() {
     setBusyId(item.id)
     try {
       const raw = await api.get(`${endpoints.appointments}/${item.id}`)
-      const res = await adminSetAppointmentStatus(raw, next)
+      const res = await applyAppointmentStatusChange(raw, next)
       if (!res.ok) {
         toast.error(res.error || 'Không thể cập nhật')
         return

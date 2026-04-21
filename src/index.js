@@ -5,12 +5,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-toastify/dist/ReactToastify.css'
 import './index.css'
 import './styles/medilab-theme.css'
-import App from './App.jsx'
+import AppRoutes from './routes/AppRoutes'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <AppRoutes />
     </BrowserRouter>
   </StrictMode>
 )
