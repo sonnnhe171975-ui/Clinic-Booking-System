@@ -14,7 +14,11 @@ function AppNavbar() {
   return (
     <Navbar bg="light" expand="lg" className="shadow-sm mb-4 border-bottom">
       <Container>
-        <Navbar.Brand as={Link} to="/" className="fw-semibold d-flex align-items-center gap-2">
+        <Navbar.Brand
+          as={Link}
+          to={isDoctor ? '/doctor' : '/'}
+          className="fw-semibold d-flex align-items-center gap-2"
+        >
           <img
             src="/medilab/MediLab-1.0.0/assets/img/logo.png"
             alt="logo"
@@ -26,31 +30,35 @@ function AppNavbar() {
         <Navbar.Toggle />
         <Navbar.Collapse>
           <Nav className="me-auto">
-            <Nav.Link as={NavLink} to="/">
-              Home
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/about">
-              About
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/specialties">
-              Chuyen khoa
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/doctors">
-              Bac si
-            </Nav.Link>
+            {!isDoctor && (
+              <>
+                <Nav.Link as={NavLink} to="/">
+                  Trang chủ
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/about">
+                  Giới thiệu
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/specialties">
+                  Chuyên khoa
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/doctors">
+                  Bác sĩ
+                </Nav.Link>
+              </>
+            )}
             {isAdmin && (
               <Nav.Link as={NavLink} to="/admin">
-                Quan tri
+                Quản trị
               </Nav.Link>
             )}
             {isPatient && (
               <Nav.Link as={NavLink} to="/patient">
-                Dashboard
+                Bảng điều khiển
               </Nav.Link>
             )}
             {isDoctor && (
-              <Nav.Link as={NavLink} to="/doctor">
-                Doctor Panel
+              <Nav.Link as={NavLink} to="/doctor" end>
+                Lịch làm việc
               </Nav.Link>
             )}
           </Nav>
@@ -65,17 +73,17 @@ function AppNavbar() {
                   {role}
                 </Badge>
                 <Button size="sm" variant="outline-primary" onClick={onLogout}>
-                  Logout
+                  Đăng xuất
                 </Button>
               </>
             ) : (
               <>
-                <Badge bg="secondary">guest</Badge>
+                <Badge bg="secondary">khách</Badge>
                 <Button as={Link} to="/login" size="sm" variant="outline-primary">
-                Login
+                  Đăng nhập
                 </Button>
                 <Button as={Link} to="/register" size="sm" variant="primary">
-                  Register
+                  Đăng ký
                 </Button>
               </>
             )}

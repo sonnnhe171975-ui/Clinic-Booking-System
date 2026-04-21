@@ -9,22 +9,19 @@ function DashboardLayout({ role, title, children }) {
   const menuItems =
     role === 'admin'
       ? [
-          { to: '/admin', label: 'Tong quan', end: true },
-          { to: '/admin/specialties', label: 'Specialties' },
-          { to: '/admin/doctors', label: 'Doctors' },
-          { to: '/admin/schedules', label: 'Schedules' },
-          { to: '/admin/users', label: 'Users' },
-          { to: '/admin/appointments', label: 'Appointments' },
+          { to: '/admin', label: 'Tổng quan', end: true },
+          { to: '/admin/specialties', label: 'Chuyên khoa' },
+          { to: '/admin/doctors', label: 'Bác sĩ' },
+          { to: '/admin/schedules', label: 'Lịch khám' },
+          { to: '/admin/users', label: 'Người dùng' },
+          { to: '/admin/appointments', label: 'Lịch hẹn' },
         ]
       : role === 'doctor'
-      ? [
-          { to: '/doctor', label: 'Lich dang ky', end: true },
-          { to: '/doctor/patients', label: 'Ho so benh nhan' },
-        ]
+      ? [{ to: '/doctor', label: 'Lịch đăng ký', end: true }]
       : [
-          { to: '/patient', label: 'Trang chu', end: true },
-          { to: '/patient/appointments', label: 'Lich hen cua toi' },
-          { to: '/patient/doctors', label: 'Dat lich kham' },
+          { to: '/patient', label: 'Trang chủ', end: true },
+          { to: '/patient/appointments', label: 'Lịch hẹn của tôi' },
+          { to: '/patient/doctors', label: 'Đặt lịch khám' },
         ]
   const defaultBack =
     role === 'admin' ? '/admin' : role === 'doctor' ? '/doctor' : '/patient'
@@ -53,17 +50,17 @@ function DashboardLayout({ role, title, children }) {
             <div>
               <BackButton fallback={defaultBack} className="mb-2" />
               <h4 className="mb-1">{title}</h4>
-              <small className="text-muted">Xin chao, {user?.fullName}</small>
+              <small className="text-muted">Xin chào, {user?.fullName}</small>
             </div>
             <Link to="/" className="btn btn-sm btn-outline-primary">
-              Ve trang Home
+              Về trang chủ
             </Link>
           </header>
 
           <main className="dashboard-content">{children}</main>
 
           <footer className="dashboard-footer text-muted small">
-            Clinic Booking Dashboard - Powered by Flexy style layout
+            Clinic Booking — Bảng điều khiển
           </footer>
         </section>
       </div>

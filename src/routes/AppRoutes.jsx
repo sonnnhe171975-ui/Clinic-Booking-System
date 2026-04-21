@@ -4,8 +4,10 @@ import { ToastContainer } from 'react-toastify'
 import AppNavbar from '../components/AppNavbar'
 import AppFooter from '../components/AppFooter'
 import DashboardLayout from '../components/DashboardLayout'
+import DoctorPublicRedirect from '../components/DoctorPublicRedirect'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { AuthProvider } from '../hooks/AuthProvider'
+import { useAuthContext } from '../hooks/useAuthContext'
 import AdminAppointmentsPage from '../pages/AdminAppointmentsPage'
 import AdminCrudPage from '../pages/AdminCrudPage'
 import AdminHomePage from '../pages/AdminHomePage'
@@ -25,10 +27,10 @@ function NotFoundPage() {
     <Container className="py-4">
       <Card className="text-center shadow-sm">
         <Card.Body>
-          <Card.Title>404 - Khong tim thay trang</Card.Title>
-          <Card.Text>Duong dan ban truy cap khong ton tai.</Card.Text>
+          <Card.Title>404 — Không tìm thấy trang</Card.Title>
+          <Card.Text>Đường dẫn bạn truy cập không tồn tại.</Card.Text>
           <Button href="/" variant="primary">
-            Quay ve trang chu
+            Quay về trang chủ
           </Button>
         </Card.Body>
       </Card>
@@ -36,21 +38,57 @@ function NotFoundPage() {
   )
 }
 
-function AppRoutes() {
+function AppShell() {
   const location = useLocation()
+  const { isDoctor } = useAuthContext()
   const isAuthPage = ['/login', '/register'].includes(location.pathname)
+  const showFooter = !isAuthPage && !isDoctor
 
   return (
-    <AuthProvider>
-      <div className="app-shell">
-        {!isAuthPage && <AppNavbar />}
-        <main className="app-main">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/specialties" element={<SpecialtiesPage />} />
-            <Route path="/doctors" element={<DoctorsPage />} />
-            <Route path="/doctors/:id" element={<DoctorDetailPage />} />
+    <div className="app-shell">
+      {!isAuthPage && <AppNavbar />}
+      <main className="app-main">
+        <Routes>
+            <Route
+              path="/"
+              element={
+                <DoctorPublicRedirect>
+                  <HomePage />
+                </DoctorPublicRedirect>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <DoctorPublicRedirect>
+                  <AboutPage />
+                </DoctorPublicRedirect>
+              }
+            />
+            <Route
+              path="/specialties"
+              element={
+                <DoctorPublicRedirect>
+                  <SpecialtiesPage />
+                </DoctorPublicRedirect>
+              }
+            />
+            <Route
+              path="/doctors"
+              element={
+                <DoctorPublicRedirect>
+                  <DoctorsPage />
+                </DoctorPublicRedirect>
+              }
+            />
+            <Route
+              path="/doctors/:id"
+              element={
+                <DoctorPublicRedirect>
+                  <DoctorDetailPage />
+                </DoctorPublicRedirect>
+              }
+            />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
 
@@ -58,7 +96,7 @@ function AppRoutes() {
               path="/patient"
               element={
                 <ProtectedRoute allow={['patient']}>
-                  <DashboardLayout role="patient" title="Patient Dashboard">
+                  <DashboardLayout role="patient" title="Bảng điều khiển bệnh nhân">
                     <PatientDashboardPage />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -68,7 +106,7 @@ function AppRoutes() {
               path="/patient/appointments"
               element={
                 <ProtectedRoute allow={['patient']}>
-                  <DashboardLayout role="patient" title="Lich hen cua toi">
+                  <DashboardLayout role="patient" title="Lịch hẹn của tôi">
                     <PatientAppointmentsPage />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -78,7 +116,7 @@ function AppRoutes() {
               path="/patient/doctors"
               element={
                 <ProtectedRoute allow={['patient']}>
-                  <DashboardLayout role="patient" title="Dat lich kham">
+                  <DashboardLayout role="patient" title="Đặt lịch khám">
                     <DoctorsPage detailBasePath="/patient/doctors" />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -88,7 +126,7 @@ function AppRoutes() {
               path="/patient/doctors/:id"
               element={
                 <ProtectedRoute allow={['patient']}>
-                  <DashboardLayout role="patient" title="Chi tiet bac si">
+                  <DashboardLayout role="patient" title="Chi tiết bác sĩ">
                     <DoctorDetailPage backFallback="/patient/doctors" />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -99,27 +137,18 @@ function AppRoutes() {
               path="/doctor"
               element={
                 <ProtectedRoute allow={['doctor']}>
-                  <DashboardLayout role="doctor" title="Lich dang ky benh nhan">
+                  <DashboardLayout role="doctor" title="Lịch đăng ký bệnh nhân">
                     <DoctorAppointmentsPage />
                   </DashboardLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/doctor/patients"
-              element={
-                <ProtectedRoute allow={['doctor']}>
-                  <DashboardLayout role="doctor" title="Ho so benh nhan">
-                    <DoctorAppointmentsPage />
-                  </DashboardLayout>
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/doctor/patients" element={<Navigate to="/doctor" replace />} />
             <Route
               path="/admin"
               element={
                 <ProtectedRoute allow={['admin']}>
-                  <DashboardLayout role="admin" title="Admin Dashboard">
+                  <DashboardLayout role="admin" title="Bảng điều khiển quản trị">
                     <AdminHomePage />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -129,7 +158,7 @@ function AppRoutes() {
               path="/admin/specialties"
               element={
                 <ProtectedRoute allow={['admin']}>
-                  <DashboardLayout role="admin" title="Quan ly chuyen khoa">
+                  <DashboardLayout role="admin" title="Quản lý chuyên khoa">
                     <AdminCrudPage resource="specialties" />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -139,7 +168,7 @@ function AppRoutes() {
               path="/admin/doctors"
               element={
                 <ProtectedRoute allow={['admin']}>
-                  <DashboardLayout role="admin" title="Quan ly bac si">
+                  <DashboardLayout role="admin" title="Quản lý bác sĩ">
                     <AdminCrudPage resource="doctors" />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -149,7 +178,7 @@ function AppRoutes() {
               path="/admin/schedules"
               element={
                 <ProtectedRoute allow={['admin']}>
-                  <DashboardLayout role="admin" title="Quan ly lich kham">
+                  <DashboardLayout role="admin" title="Quản lý lịch khám">
                     <AdminCrudPage resource="schedules" />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -159,7 +188,7 @@ function AppRoutes() {
               path="/admin/users"
               element={
                 <ProtectedRoute allow={['admin']}>
-                  <DashboardLayout role="admin" title="Quan ly nguoi dung">
+                  <DashboardLayout role="admin" title="Quản lý người dùng">
                     <AdminCrudPage resource="users" />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -169,7 +198,7 @@ function AppRoutes() {
               path="/admin/appointments"
               element={
                 <ProtectedRoute allow={['admin']}>
-                  <DashboardLayout role="admin" title="Quan ly lich hen">
+                  <DashboardLayout role="admin" title="Quản lý lịch hẹn">
                     <AdminAppointmentsPage />
                   </DashboardLayout>
                 </ProtectedRoute>
@@ -179,9 +208,16 @@ function AppRoutes() {
             <Route path="/home" element={<Navigate to="/" replace />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </main>
-        {!isAuthPage && <AppFooter />}
-      </div>
+      </main>
+      {showFooter && <AppFooter />}
+    </div>
+  )
+}
+
+function AppRoutes() {
+  return (
+    <AuthProvider>
+      <AppShell />
       <ToastContainer position="top-right" autoClose={1800} />
     </AuthProvider>
   )

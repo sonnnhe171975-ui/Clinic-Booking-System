@@ -46,9 +46,9 @@ function LoginPage() {
                 className="login-visual-image"
               />
               <Card.ImgOverlay className="login-visual-overlay d-flex flex-column justify-content-end">
-                <h3 className="text-white mb-2">Benh vien dat lich thong minh</h3>
+                <h3 className="text-white mb-2">Bệnh viện đặt lịch thông minh</h3>
                 <p className="text-white-50 mb-0">
-                  Quan ly lich kham, dat lich nhanh va theo doi trang thai theo thoi gian thuc.
+                  Quản lý lịch khám, đặt lịch nhanh và theo dõi trạng thái theo thời gian thực.
                 </p>
               </Card.ImgOverlay>
             </Card>
@@ -57,41 +57,41 @@ function LoginPage() {
           <Col md={9} lg={5}>
             <Card className="med-card login-form-card">
               <Card.Body className="p-4 p-lg-5">
-                <BackButton fallback="/" label="Home" className="mb-3" forceFallback />
+                <BackButton fallback="/" label="Trang chủ" className="mb-3" forceFallback />
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <Card.Title className="mb-0">Dang nhap he thong</Card.Title>
+                  <Card.Title className="mb-0">Đăng nhập hệ thống</Card.Title>
                   <Badge bg="primary">Secure Auth</Badge>
                 </div>
                 <Card.Text className="text-muted small mb-4">
-                  Admin: admin / 123456 - Patient: user1 / 123456
+                  Admin: admin / 123456 — Bệnh nhân: user1 / 123456
                 </Card.Text>
                 {error && <Alert variant="danger">{error}</Alert>}
                 <Form onSubmit={onSubmit}>
                   <Form.Group className="mb-3">
-                    <Form.Label>Username</Form.Label>
+                    <Form.Label>Tên đăng nhập</Form.Label>
                     <Form.Control
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      placeholder="Nhap username"
+                      placeholder="Nhập tên đăng nhập"
                       autoComplete="username"
                     />
                   </Form.Group>
                   <Form.Group className="mb-4">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Mật khẩu</Form.Label>
                     <Form.Control
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Nhap password"
+                      placeholder="Nhập mật khẩu"
                       autoComplete="current-password"
                     />
                   </Form.Group>
                   <Button type="submit" className="w-100 py-2 fw-semibold">
-                    Login
+                    Đăng nhập
                   </Button>
                 </Form>
                 <div className="small text-muted text-center mt-2">
-                  Chua co tai khoan? <Link to="/register">Dang ky</Link>
+                  Chưa có tài khoản? <Link to="/register">Đăng ký</Link>
                 </div>
               </Card.Body>
             </Card>

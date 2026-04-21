@@ -17,6 +17,7 @@ import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import BackButton from '../components/BackButton'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { bookAppointmentAtomic } from '../utils/appointmentFlow'
 
 const SHIFT_OPTIONS = [
   { code: 'ca1', label: 'Ca 1', time: '07:00-10:00' },
@@ -36,11 +37,22 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
   const { user, isPatient } = useAuthContext()
   const [doctor, setDoctor] = useState(null)
   const [schedules, setSchedules] = useState([])
-  const [patientName, setPatientName] = useState(user?.fullName || '')
+  const [patientName, setPatientName] = useState('')
   const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [address, setAddress] = useState('')
+  const [note, setNote] = useState('')
   const [selectedScheduleId, setSelectedScheduleId] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+
+  useEffect(() => {
+    if (user?.fullName) setPatientName(user.fullName)
+    if (user?.phone) setPhone(user.phone)
+    if (user?.email) setEmail(user.email)
+    if (user?.address) setAddress(user.address)
+  }, [user])
 
   useEffect(() => {
     async function loadData() {
@@ -52,7 +64,7 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
         setDoctor(doctorData)
         setSchedules(scheduleData)
       } catch {
-        setError('Khong tai duoc thong tin bac si')
+        setError('Không tải được thông tin bác sĩ')
       } finally {
         setLoading(false)
       }
@@ -66,6 +78,15 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
     [schedules]
   )
 
+  async function refreshSchedules() {
+    const [doctorData, scheduleData] = await Promise.all([
+      api.get(`${endpoints.doctors}/${id}`),
+      api.get(`${endpoints.schedules}?doctorId=${id}`),
+    ])
+    setDoctor(doctorData)
+    setSchedules(scheduleData)
+  }
+
   async function onBookingSubmit(event) {
     event.preventDefault()
     setError('')
@@ -75,53 +96,45 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
       return
     }
     if (!patientName || !phone || !selectedScheduleId) {
-      setError('Vui long nhap du thong tin')
+      setError('Vui lòng nhập đủ thông tin bắt buộc')
       return
     }
     if (!/^\d{9,11}$/.test(phone)) {
-      setError('So dien thoai khong hop le')
+      setError('Số điện thoại không hợp lệ')
       return
     }
 
     const schedule = schedules.find((item) => String(item.id) === selectedScheduleId)
     if (!schedule || schedule.currentSlot >= schedule.maxSlot) {
-      setError('Lich nay da full')
+      setError('Lịch này đã đầy')
       return
     }
 
-    const duplicateCheck = await api.get(
-      `${endpoints.appointments}?userId=${user.id}&scheduleId=${selectedScheduleId}`
-    )
-    if (duplicateCheck.length > 0) {
-      setError('Ban da dat lich nay roi')
-      return
+    setSubmitting(true)
+    try {
+      const res = await bookAppointmentAtomic({
+        userId: user.id,
+        doctorId: Number(id),
+        scheduleId: Number(selectedScheduleId),
+        patientName,
+        phone,
+        email: email || user.email || '',
+        address: address || user.address || '',
+        note,
+      })
+      if (!res.ok) {
+        setError(res.error || 'Đặt lịch thất bại')
+        return
+      }
+      toast.success('Đặt lịch thành công (chờ bác sĩ xác nhận)')
+      setSelectedScheduleId('')
+      setNote('')
+      await refreshSchedules()
+    } catch {
+      setError('Đặt lịch thất bại, vui lòng thử lại')
+    } finally {
+      setSubmitting(false)
     }
-
-    await api.post(endpoints.appointments, {
-      userId: user.id,
-      doctorId: Number(id),
-      scheduleId: Number(selectedScheduleId),
-      patientName,
-      phone,
-      createdAt: new Date().toISOString(),
-    })
-
-    const nextCurrentSlot = schedule.currentSlot + 1
-    await api.put(`${endpoints.schedules}/${schedule.id}`, {
-      ...schedule,
-      currentSlot: nextCurrentSlot,
-      status: nextCurrentSlot >= schedule.maxSlot ? 'full' : 'available',
-    })
-
-    toast.success('Dat lich thanh cong')
-    setPhone('')
-    setSelectedScheduleId('')
-    const [doctorData, scheduleData] = await Promise.all([
-      api.get(`${endpoints.doctors}/${id}`),
-      api.get(`${endpoints.schedules}?doctorId=${id}`),
-    ])
-    setDoctor(doctorData)
-    setSchedules(scheduleData)
   }
 
   if (loading) {
@@ -134,10 +147,10 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
 
   return (
     <Container className="py-2 medilab-page">
-      <BackButton fallback={backFallback} label="Danh sach bac si" className="mb-3" />
+      <BackButton fallback={backFallback} label="Danh sách bác sĩ" className="mb-3" />
       {error && <Alert variant="danger">{error}</Alert>}
       {!doctor ? (
-        <Alert variant="warning">Khong tim thay bac si</Alert>
+        <Alert variant="warning">Không tìm thấy bác sĩ</Alert>
       ) : (
         <Row className="g-3">
           <Col lg={7}>
@@ -145,7 +158,7 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
               <Card.Body>
                 <Card.Title className="d-flex justify-content-between align-items-center">
                   <span>{doctor.name}</span>
-                  <Badge bg="info">{doctor.experience} nam kinh nghiem</Badge>
+                  <Badge bg="info">{doctor.experience} năm kinh nghiệm</Badge>
                 </Card.Title>
                 <Card.Text className="text-muted mb-0">{doctor.bio}</Card.Text>
               </Card.Body>
@@ -153,15 +166,15 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
 
             <Card className="mt-3 med-card">
               <Card.Body>
-                <Card.Title>Lich kham</Card.Title>
+                <Card.Title>Lịch khám</Card.Title>
                 <Table striped hover responsive className="mb-0">
                   <thead>
                     <tr>
-                      <th>Ngay</th>
+                      <th>Ngày</th>
                       <th>Ca</th>
-                      <th>Gio</th>
+                      <th>Giờ</th>
                       <th>Slot</th>
-                      <th>Trang thai</th>
+                      <th>Trạng thái</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -177,7 +190,7 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
                           </td>
                           <td>
                             <Badge bg={isFull ? 'danger' : 'success'}>
-                              {isFull ? 'full' : 'available'}
+                              {isFull ? 'đầy' : 'còn chỗ'}
                             </Badge>
                           </td>
                         </tr>
@@ -192,31 +205,57 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
           <Col lg={5}>
             <Card className="med-card">
               <Card.Body>
-                <Card.Title>Dat lich kham</Card.Title>
+                <Card.Title>Đặt lịch khám</Card.Title>
                 {!user && (
                   <Alert variant="info" className="small">
-                    Vui long dang nhap tai khoan patient de dat lich.
+                    Vui lòng đăng nhập tài khoản bệnh nhân để đặt lịch.
                   </Alert>
                 )}
                 <Form onSubmit={onBookingSubmit}>
                   <Form.Group className="mb-2">
-                    <Form.Label>Ten benh nhan</Form.Label>
+                    <Form.Label>Tên bệnh nhân</Form.Label>
                     <Form.Control
                       value={patientName}
                       onChange={(e) => setPatientName(e.target.value)}
                     />
                   </Form.Group>
                   <Form.Group className="mb-2">
-                    <Form.Label>So dien thoai</Form.Label>
+                    <Form.Label>Số điện thoại</Form.Label>
                     <Form.Control value={phone} onChange={(e) => setPhone(e.target.value)} />
                   </Form.Group>
+                  <Form.Group className="mb-2">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Tự động lấy từ hồ sơ nếu để trống"
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-2">
+                    <Form.Label>Địa chỉ</Form.Label>
+                    <Form.Control
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      placeholder="Địa chỉ liên hệ khi khám"
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-2">
+                    <Form.Label>Ghi chú / lý do khám</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={2}
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
+                    />
+                  </Form.Group>
                   <Form.Group className="mb-3">
-                    <Form.Label>Chon lich</Form.Label>
+                    <Form.Label>Chọn lịch</Form.Label>
                     <Form.Select
                       value={selectedScheduleId}
                       onChange={(e) => setSelectedScheduleId(e.target.value)}
                     >
-                      <option value="">-- Chon --</option>
+                      <option value="">— Chọn —</option>
                       {availableSchedules.map((item) => (
                         <option key={item.id} value={item.id}>
                           {item.date} - {getShiftLabel(item.time)}
@@ -224,8 +263,11 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
                       ))}
                     </Form.Select>
                   </Form.Group>
-                  <Button type="submit" disabled={availableSchedules.length === 0}>
-                    Xac nhan dat lich
+                  <Button
+                    type="submit"
+                    disabled={availableSchedules.length === 0 || submitting}
+                  >
+                    {submitting ? 'Đang gửi…' : 'Xác nhận đặt lịch'}
                   </Button>
                 </Form>
               </Card.Body>

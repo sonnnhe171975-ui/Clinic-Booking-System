@@ -16,22 +16,22 @@ import { endpoints } from '../api/config'
 
 const RESOURCE_CONFIG = {
   specialties: {
-    title: 'Quan ly chuyen khoa',
+    title: 'Quản lý chuyên khoa',
     path: endpoints.specialties,
     fields: ['name', 'description'],
   },
   doctors: {
-    title: 'Quan ly bac si',
+    title: 'Quản lý bác sĩ',
     path: endpoints.doctors,
     fields: ['name', 'specialtyId', 'experience', 'bio'],
   },
   schedules: {
-    title: 'Quan ly lich kham',
+    title: 'Quản lý lịch khám',
     path: endpoints.schedules,
     fields: ['doctorId', 'date', 'time', 'maxSlot', 'currentSlot', 'status'],
   },
   users: {
-    title: 'Quan ly nguoi dung',
+    title: 'Quản lý người dùng',
     path: endpoints.users,
     fields: ['fullName', 'username', 'email', 'phone', 'address', 'role', 'password'],
     sortFields: ['fullName', 'username', 'email', 'role'],
@@ -71,7 +71,7 @@ function AdminCrudPage({ resource }) {
         const data = await api.get(config.path)
         setItems(data)
       } catch {
-        setError('Khong the tai du lieu')
+        setError('Không thể tải dữ liệu')
       } finally {
         setLoading(false)
       }
@@ -126,27 +126,29 @@ function AdminCrudPage({ resource }) {
         const time = String(payload.time || '').trim()
 
         if (!doctorId || !date || !time) {
-          setError('Doctor, date va time la bat buoc')
+          setError('Bác sĩ, ngày và khung giờ là bắt buộc')
           return
         }
 
         if (!ALLOWED_SHIFT_TIMES.includes(time)) {
-          setError('Time chi duoc chon 1 trong 4 ca: 07:00-10:00, 10:00-12:20, 12:50-15:00, 15:30-17:40')
+          setError(
+            'Khung giờ chỉ được chọn một trong 4 ca: 07:00-10:00, 10:00-12:20, 12:50-15:00, 15:30-17:40'
+          )
           return
         }
 
         const newRange = parseTimeRangeToMinutes(time)
         if (!newRange) {
-          setError('Time phai dung dinh dang HH:MM-HH:MM va gio ket thuc lon hon gio bat dau')
+          setError('Khung giờ phải đúng định dạng HH:MM-HH:MM và giờ kết thúc lớn hơn giờ bắt đầu')
           return
         }
 
         if (!maxSlot || maxSlot <= 0) {
-          setError('maxSlot phai la so duong')
+          setError('maxSlot phải là số dương')
           return
         }
         if (currentSlot < 0 || currentSlot > maxSlot) {
-          setError('currentSlot phai nam trong khoang 0..maxSlot')
+          setError('currentSlot phải nằm trong khoảng 0 … maxSlot')
           return
         }
 
@@ -163,7 +165,7 @@ function AdminCrudPage({ resource }) {
         })
 
         if (isOverlap) {
-          setError('Bac si da co lich trong khung gio nay')
+          setError('Bác sĩ đã có lịch trong khung giờ này')
           return
         }
 
@@ -188,7 +190,7 @@ function AdminCrudPage({ resource }) {
       const data = await api.get(config.path)
       setItems(data)
     } catch {
-      setError('Khong the luu du lieu')
+      setError('Không thể lưu dữ liệu')
     }
   }
 
@@ -207,7 +209,7 @@ function AdminCrudPage({ resource }) {
       const data = await api.get(config.path)
       setItems(data)
     } catch {
-      setError('Khong the xoa du lieu')
+      setError('Không thể xóa dữ liệu')
     }
   }
 
@@ -215,13 +217,13 @@ function AdminCrudPage({ resource }) {
     <Container className="py-2 medilab-page">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h3 className="mb-0">{config.title}</h3>
-        <Badge bg="secondary">{displayedItems.length} records</Badge>
+        <Badge bg="secondary">{displayedItems.length} bản ghi</Badge>
       </div>
       {error && <Alert variant="danger">{error}</Alert>}
       <Row className="mb-3 g-2">
         <Col md={4}>
           <Form.Control
-            placeholder={`Tim theo ${config.searchField || config.fields[0]}`}
+            placeholder={`Tìm theo ${config.searchField || config.fields[0]}`}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />
@@ -230,21 +232,21 @@ function AdminCrudPage({ resource }) {
           <Form.Select value={sortField} onChange={(e) => setSortField(e.target.value)}>
             {(config.sortFields || config.fields).map((field) => (
               <option key={field} value={field}>
-                Sort: {field}
+                Sắp xếp: {field}
               </option>
             ))}
           </Form.Select>
         </Col>
         <Col md={2}>
           <Form.Select value={sortDir} onChange={(e) => setSortDir(e.target.value)}>
-            <option value="asc">ASC</option>
-            <option value="desc">DESC</option>
+            <option value="asc">Tăng dần</option>
+            <option value="desc">Giảm dần</option>
           </Form.Select>
         </Col>
         {config.roleFilter && (
           <Col md={3}>
             <Form.Select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)}>
-              <option value="">Tat ca role</option>
+              <option value="">Tất cả vai trò</option>
               <option value="admin">admin</option>
               <option value="patient">patient</option>
             </Form.Select>
@@ -268,7 +270,7 @@ function AdminCrudPage({ resource }) {
                   ))}
                 </Row>
                 <div className="d-flex gap-2">
-                  <Button type="submit">{editingId ? 'Update' : 'Create'}</Button>
+                  <Button type="submit">{editingId ? 'Cập nhật' : 'Tạo mới'}</Button>
                   {editingId && (
                     <Button
                       type="button"
@@ -278,7 +280,7 @@ function AdminCrudPage({ resource }) {
                         setForm({})
                       }}
                     >
-                      Cancel edit
+                      Hủy chỉnh sửa
                     </Button>
                   )}
                 </div>
@@ -299,7 +301,7 @@ function AdminCrudPage({ resource }) {
               {config.fields.map((field) => (
                 <th key={field}>{field}</th>
               ))}
-              <th>Action</th>
+              <th>Thao tác</th>
             </tr>
           </thead>
           <tbody>
@@ -312,10 +314,10 @@ function AdminCrudPage({ resource }) {
                 <td>
                   <div className="d-flex align-items-center gap-2 flex-nowrap">
                     <Button size="sm" onClick={() => onEdit(item)}>
-                      Edit
+                      Sửa
                     </Button>
                     <Button size="sm" variant="danger" onClick={() => onDelete(item.id)}>
-                      Delete
+                      Xóa
                     </Button>
                   </div>
                 </td>
@@ -324,7 +326,7 @@ function AdminCrudPage({ resource }) {
             {items.length === 0 && (
               <tr>
                 <td colSpan={config.fields.length + 2} className="text-center text-muted">
-                  Chua co du lieu
+                  Chưa có dữ liệu
                 </td>
               </tr>
             )}

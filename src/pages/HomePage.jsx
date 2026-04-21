@@ -4,19 +4,22 @@ import { useAuthContext } from '../hooks/useAuthContext'
 
 function HomePage() {
   const { role } = useAuthContext()
-  const dashboardLink = role === 'admin' ? '/admin' : '/patient'
+  const dashboardLink =
+    role === 'admin' ? '/admin' : role === 'doctor' ? '/doctor' : '/patient'
 
   return (
     <Container className="medilab-page py-2">
       <div className="medilab-hero">
-        <h2 className="mb-2">He thong dat lich kham benh</h2>
+        <h2 className="mb-2">Hệ thống đặt lịch khám bệnh</h2>
         <p className="mb-3">
-          Dat lich nhanh, theo doi lich hen, quan ly bac si va lich kham theo tung vai tro.
+          Đặt lịch nhanh, theo dõi lịch hẹn, quản lý bác sĩ và lịch khám theo từng vai trò.
         </p>
         <div className="d-flex gap-2 flex-wrap">
-          <Button as={Link} to="/doctors">Dat lich ngay</Button>
+          <Button as={Link} to="/doctors">
+            Đặt lịch ngay
+          </Button>
           <Button as={Link} to={role === 'guest' ? '/login' : dashboardLink} variant="outline-light">
-            {role === 'guest' ? 'Dang nhap' : 'Chuyen den dashboard'}
+            {role === 'guest' ? 'Đăng nhập' : 'Chuyển đến bảng điều khiển'}
           </Button>
         </div>
       </div>
@@ -30,7 +33,7 @@ function HomePage() {
               alt="slide 1"
             />
             <Carousel.Caption>
-              <h5>Dat lich nhanh gon</h5>
+              <h5>Đặt lịch nhanh gọn</h5>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
@@ -40,7 +43,7 @@ function HomePage() {
               alt="slide 2"
             />
             <Carousel.Caption>
-              <h5>Cham soc tan tam</h5>
+              <h5>Chăm sóc tận tâm</h5>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
@@ -50,7 +53,7 @@ function HomePage() {
               alt="slide 3"
             />
             <Carousel.Caption>
-              <h5>Doi ngu bac si chat luong</h5>
+              <h5>Đội ngũ bác sĩ chất lượng</h5>
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
@@ -60,9 +63,9 @@ function HomePage() {
         <Col md={4}>
           <Card className="med-card h-100">
             <Card.Body>
-              <Card.Title>Bac si chat luong</Card.Title>
+              <Card.Title>Bác sĩ chất lượng</Card.Title>
               <Card.Text className="text-muted">
-                Danh sach bac si theo chuyen khoa, thong tin chi tiet va kinh nghiem.
+                Danh sách bác sĩ theo chuyên khoa, thông tin chi tiết và kinh nghiệm.
               </Card.Text>
             </Card.Body>
           </Card>
@@ -70,9 +73,9 @@ function HomePage() {
         <Col md={4}>
           <Card className="med-card h-100">
             <Card.Body>
-              <Card.Title>Lich kham linh hoat</Card.Title>
+              <Card.Title>Lịch khám linh hoạt</Card.Title>
               <Card.Text className="text-muted">
-                Xem slot trong theo ngay/gio va dat lich ngay tren he thong.
+                Xem slot trống theo ngày/giờ và đặt lịch ngay trên hệ thống.
               </Card.Text>
             </Card.Body>
           </Card>
@@ -80,9 +83,10 @@ function HomePage() {
         <Col md={4}>
           <Card className="med-card h-100">
             <Card.Body>
-              <Card.Title>Quan ly minh bach</Card.Title>
+              <Card.Title>Quản lý minh bạch</Card.Title>
               <Card.Text className="text-muted">
-                Admin theo doi specialties, doctors, schedules, appointments theo dashboard.
+                Quản trị viên theo dõi chuyên khoa, bác sĩ, lịch khám và lịch hẹn qua bảng điều
+                khiển.
               </Card.Text>
             </Card.Body>
           </Card>

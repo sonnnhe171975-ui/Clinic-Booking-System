@@ -5,11 +5,11 @@ function ProtectedRoute({ allow, children }) {
   const { user } = useAuthContext()
 
   if (!user) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/login" replace />
   }
 
   if (allow && !allow.includes(user.role)) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/login" replace />
   }
 
   return children

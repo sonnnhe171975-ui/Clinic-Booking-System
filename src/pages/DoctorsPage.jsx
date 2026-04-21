@@ -35,7 +35,7 @@ function DoctorsPage({ detailBasePath = '/doctors' }) {
         setDoctors(doctorData)
         setSpecialties(specialtyData)
       } catch {
-        setError('Khong tai duoc danh sach bac si')
+        setError('Không tải được danh sách bác sĩ')
       } finally {
         setLoading(false)
       }
@@ -57,22 +57,22 @@ function DoctorsPage({ detailBasePath = '/doctors' }) {
 
   return (
     <Container className="py-2 medilab-page">
-      <BackButton fallback="/" label="Home" className="mb-3" />
+      <BackButton fallback="/" label="Trang chủ" className="mb-3" />
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h3 className="mb-0">Danh sach bac si</h3>
-        <Badge bg="secondary">{filteredDoctors.length} ket qua</Badge>
+        <h3 className="mb-0">Danh sách bác sĩ</h3>
+        <Badge bg="secondary">{filteredDoctors.length} kết quả</Badge>
       </div>
       <Card className="mb-3 med-card">
         <Card.Body>
           <Row className="g-2">
             <Col md={4}>
               <InputGroup>
-                <InputGroup.Text>Chuyen khoa</InputGroup.Text>
+                <InputGroup.Text>Chuyên khoa</InputGroup.Text>
                 <Form.Select
                   value={specialtyId}
                   onChange={(e) => setSpecialtyId(e.target.value)}
                 >
-                  <option value="">Tat ca</option>
+                  <option value="">Tất cả</option>
                   {specialties.map((item) => (
                     <option key={item.id} value={item.id}>
                       {item.name}
@@ -83,10 +83,10 @@ function DoctorsPage({ detailBasePath = '/doctors' }) {
             </Col>
             <Col md={4}>
               <InputGroup>
-                <InputGroup.Text>Sap xep</InputGroup.Text>
+                <InputGroup.Text>Sắp xếp</InputGroup.Text>
                 <Form.Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                  <option value="name">Theo ten</option>
-                  <option value="experience">Theo kinh nghiem</option>
+                  <option value="name">Theo tên</option>
+                  <option value="experience">Theo kinh nghiệm</option>
                 </Form.Select>
               </InputGroup>
             </Col>
@@ -98,7 +98,7 @@ function DoctorsPage({ detailBasePath = '/doctors' }) {
                   setSortBy('name')
                 }}
               >
-                Reset
+                Đặt lại
               </Button>
             </Col>
           </Row>
@@ -115,16 +115,16 @@ function DoctorsPage({ detailBasePath = '/doctors' }) {
       {!loading && !error && (
         <Row>
           {filteredDoctors.map((doctor) => (
-            <Col md={4} className="mb-3" key={doctor.id}>
+            <Col md={6} className="mb-3" key={doctor.id}>
               <Card className="h-100 med-card">
                 <Card.Body className="d-flex flex-column">
                   <Card.Title className="d-flex justify-content-between">
                     <span>{doctor.name}</span>
-                    <Badge bg="info">{doctor.experience} nam</Badge>
+                    <Badge bg="info">{doctor.experience} năm</Badge>
                   </Card.Title>
                   <Card.Text className="text-muted flex-grow-1">{doctor.bio}</Card.Text>
                   <Button as={Link} to={`${detailBasePath}/${doctor.id}`} size="sm">
-                    Xem chi tiet
+                    Xem chi tiết
                   </Button>
                 </Card.Body>
               </Card>
@@ -132,7 +132,7 @@ function DoctorsPage({ detailBasePath = '/doctors' }) {
           ))}
           {filteredDoctors.length === 0 && (
             <Col>
-              <Alert variant="warning">Khong co bac si phu hop bo loc.</Alert>
+              <Alert variant="warning">Không có bác sĩ phù hợp bộ lọc.</Alert>
             </Col>
           )}
         </Row>

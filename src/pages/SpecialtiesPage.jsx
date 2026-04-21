@@ -16,7 +16,7 @@ function SpecialtiesPage() {
         const data = await api.get(endpoints.specialties)
         setSpecialties(data)
       } catch {
-        setError('Khong tai duoc danh sach chuyen khoa')
+        setError('Không tải được danh sách chuyên khoa')
       } finally {
         setLoading(false)
       }
@@ -26,14 +26,14 @@ function SpecialtiesPage() {
 
   return (
     <Container className="py-2 medilab-page">
-      <BackButton fallback="/" label="Home" className="mb-3" />
+      <BackButton fallback="/" label="Trang chủ" className="mb-3" />
       <div className="medilab-hero">
-        <h2 className="mb-2">Dat lich kham benh truc tuyen</h2>
-        <p className="mb-0">Chon chuyen khoa phu hop va tiep tuc den bac si.</p>
+        <h2 className="mb-2">Đặt lịch khám bệnh trực tuyến</h2>
+        <p className="mb-0">Chọn chuyên khoa phù hợp và tiếp tục đến bác sĩ.</p>
       </div>
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h3 className="mb-0">Danh sach chuyen khoa</h3>
-        <Badge bg="secondary">{specialties.length} chuyen khoa</Badge>
+        <h3 className="mb-0">Danh sách chuyên khoa</h3>
+        <Badge bg="secondary">{specialties.length} chuyên khoa</Badge>
       </div>
 
       {loading && (
@@ -43,12 +43,12 @@ function SpecialtiesPage() {
       )}
       {error && <Alert variant="danger">{error}</Alert>}
       {!loading && !error && specialties.length === 0 && (
-        <Alert variant="warning">Chua co chuyen khoa nao trong he thong.</Alert>
+        <Alert variant="warning">Chưa có chuyên khoa nào trong hệ thống.</Alert>
       )}
 
       <Row>
         {specialties.map((item) => (
-          <Col md={4} key={item.id} className="mb-3">
+          <Col md={6} key={item.id} className="mb-3">
             <Card className="h-100 med-card">
               <Card.Body>
                 <Card.Title className="d-flex justify-content-between align-items-center">
@@ -57,7 +57,7 @@ function SpecialtiesPage() {
                 </Card.Title>
                 <Card.Text className="text-muted">{item.description}</Card.Text>
                 <Button as={Link} to={`/doctors?specialtyId=${item.id}`} variant="outline-primary">
-                  Xem bac si
+                  Xem bác sĩ
                 </Button>
               </Card.Body>
             </Card>

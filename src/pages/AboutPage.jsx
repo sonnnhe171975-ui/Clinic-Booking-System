@@ -4,9 +4,9 @@ function AboutPage() {
   return (
     <Container className="medilab-page py-2">
       <div className="medilab-hero">
-        <h2 className="mb-2">About Clinic Booking</h2>
+        <h2 className="mb-2">Giới thiệu Clinic Booking</h2>
         <p className="mb-0">
-          He thong dat lich giup benh nhan chu dong chon bac si, thoi gian va theo doi lich hen.
+          Hệ thống đặt lịch giúp bệnh nhân chủ động chọn bác sĩ, thời gian và theo dõi lịch hẹn.
         </p>
       </div>
 
@@ -14,10 +14,10 @@ function AboutPage() {
         <Col md={6}>
           <Card className="med-card h-100">
             <Card.Body>
-              <Card.Title>Thong tin don vi</Card.Title>
+              <Card.Title>Thông tin đơn vị</Card.Title>
               <Card.Text className="text-muted">
-                Clinic Booking System duoc xay dung cho bai tap FER202 voi muc tieu so hoa quy
-                trinh dat lich kham benh.
+                Clinic Booking System được xây dựng cho bài tập FER202 với mục tiêu số hóa quy
+                trình đặt lịch khám bệnh.
               </Card.Text>
             </Card.Body>
           </Card>
@@ -25,8 +25,8 @@ function AboutPage() {
         <Col md={6}>
           <Card className="med-card h-100">
             <Card.Body>
-              <Card.Title>Dia chi lien he</Card.Title>
-              <Card.Text className="mb-1">123 Nguyen Van Linh, Hai Chau, Da Nang</Card.Text>
+              <Card.Title>Địa chỉ liên hệ</Card.Title>
+              <Card.Text className="mb-1">123 Nguyễn Văn Linh, Hải Châu, Đà Nẵng</Card.Text>
               <Card.Text className="mb-1">Hotline: 1900 565656</Card.Text>
               <Card.Text className="mb-0">Email: support@clinicbooking.vn</Card.Text>
             </Card.Body>
