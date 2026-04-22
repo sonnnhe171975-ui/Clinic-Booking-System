@@ -1,6 +1,7 @@
 import { Badge, Button, Container, Nav, Navbar } from 'react-bootstrap'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../hooks/useAuthContext'
+import NotificationCenter from './NotificationCenter'
 
 function AppNavbar() {
   const { user, role, isAdmin, isPatient, isDoctor, logout } = useAuthContext()
@@ -65,6 +66,7 @@ function AppNavbar() {
           <div className="d-flex align-items-center gap-2">
             {user ? (
               <>
+                <NotificationCenter />
                 <span className="small">{user.fullName}</span>
                 <Badge
                   bg={isAdmin ? 'warning' : isDoctor ? 'primary' : 'info'}

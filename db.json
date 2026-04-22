@@ -23458,7 +23458,7 @@
       "note": "đói",
       "status": "pending",
       "createdAt": "2026-04-22T07:08:17.779Z",
-      "id": "u4H0TchB_jU"
+      "id": "1230"
     },
     {
       "userId": 3,
@@ -23471,7 +23471,7 @@
       "note": "đói",
       "status": "confirmed",
       "createdAt": "2026-04-22T07:09:29.624Z",
-      "id": "D0rM4uEPqC0"
+      "id": "1231"
     },
     {
       "userId": 3,
@@ -23484,7 +23484,7 @@
       "note": "hết tiền",
       "status": "pending",
       "createdAt": "2026-04-22T07:17:37.164Z",
-      "id": "_GC-BpO-UQY"
+      "id": "1232"
     }
   ],
   "users": [
@@ -23667,6 +23667,157 @@
       "email": "phamminhd@clinicbooking.vn",
       "phone": "0905778899",
       "address": "22 Phan Chau Trinh, Hai Chau, Da Nang"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n1",
+      "userId": "5",
+      "role": "doctor",
+      "type": "pending_appointment",
+      "title": "Bệnh nhân mới vừa đặt lịch",
+      "body": "Lịch #1 đang chờ bác sĩ xác nhận",
+      "isRead": false,
+      "relatedId": "1",
+      "createdAt": "2026-04-22T08:00:00.000Z"
+    },
+    {
+      "id": "n2",
+      "userId": "2",
+      "role": "patient",
+      "type": "appointment_status",
+      "title": "Lịch hẹn đã được xác nhận",
+      "body": "Bác sĩ đã xác nhận lịch #1",
+      "isRead": false,
+      "relatedId": "1",
+      "createdAt": "2026-04-22T08:05:00.000Z"
+    },
+    {
+      "id": "n3",
+      "userId": "1",
+      "role": "admin",
+      "type": "admin_pending",
+      "title": "Có lịch mới cần theo dõi",
+      "body": "Hiện có lịch hẹn trạng thái chờ xác nhận",
+      "isRead": false,
+      "relatedId": "1",
+      "createdAt": "2026-04-22T08:10:00.000Z"
+    }
+  ],
+  "medicalRecords": [
+    {
+      "id": "mr1",
+      "appointmentId": "1",
+      "userId": "2",
+      "doctorId": "1",
+      "diagnosis": "Viêm họng cấp",
+      "conclusion": "Điều trị ngoại trú, tái khám sau 5 ngày",
+      "vitalSigns": {
+        "temperature": "37.8",
+        "bloodPressure": "120/80",
+        "heartRate": 84
+      },
+      "createdAt": "2026-04-20T09:00:00.000Z"
+    },
+    {
+      "id": "mr2",
+      "appointmentId": "2",
+      "userId": "3",
+      "doctorId": "2",
+      "diagnosis": "Cảm cúm",
+      "conclusion": "Theo dõi thêm tại nhà",
+      "vitalSigns": {
+        "temperature": "37.5",
+        "bloodPressure": "118/78",
+        "heartRate": 82
+      },
+      "createdAt": "2026-04-21T14:20:00.000Z"
+    }
+  ],
+  "prescriptions": [
+    {
+      "id": "pr1",
+      "medicalRecordId": "mr1",
+      "doctorId": "1",
+      "items": [
+        {
+          "name": "Paracetamol 500mg",
+          "dose": "1 viên x 2 lần/ngày",
+          "days": 3
+        },
+        {
+          "name": "Alpha Choay",
+          "dose": "2 viên x 2 lần/ngày",
+          "days": 5
+        }
+      ],
+      "advice": "Uống nhiều nước ấm, nghỉ ngơi",
+      "createdAt": "2026-04-20T09:10:00.000Z"
+    },
+    {
+      "id": "pr2",
+      "medicalRecordId": "mr2",
+      "doctorId": "2",
+      "items": [
+        {
+          "name": "Vitamin C",
+          "dose": "1 viên/ngày",
+          "days": 7
+        }
+      ],
+      "advice": "Bổ sung dinh dưỡng và nghỉ ngơi",
+      "createdAt": "2026-04-21T14:25:00.000Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "pay1",
+      "appointmentId": "1",
+      "userId": "2",
+      "amount": 200000,
+      "currency": "VND",
+      "method": "cash",
+      "status": "paid",
+      "paidAt": "2026-04-20T09:30:00.000Z",
+      "createdAt": "2026-04-20T09:20:00.000Z"
+    },
+    {
+      "id": "pay2",
+      "appointmentId": "2",
+      "userId": "3",
+      "amount": 250000,
+      "currency": "VND",
+      "method": "bank_transfer",
+      "status": "pending",
+      "paidAt": null,
+      "createdAt": "2026-04-21T14:30:00.000Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "al1",
+      "actorId": "5",
+      "actorRole": "doctor",
+      "action": "appointment_status_changed",
+      "resourceType": "appointments",
+      "resourceId": "1",
+      "metadata": {
+        "from": "pending",
+        "to": "confirmed"
+      },
+      "createdAt": "2026-04-20T09:05:00.000Z"
+    },
+    {
+      "id": "al2",
+      "actorId": "1",
+      "actorRole": "admin",
+      "action": "user_created",
+      "resourceType": "users",
+      "resourceId": "14",
+      "metadata": {
+        "username": "doctor4"
+      },
+      "createdAt": "2026-04-22T07:40:00.000Z"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

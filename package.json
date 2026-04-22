@@ -5,9 +5,12 @@
   "scripts": {
     "start": "set PORT=5180 && react-scripts start",
     "server": "json-server --watch db.json --port 3000",
+    "seed:expanded": "node scripts/seed-expanded-data.js",
+    "normalize:appointments": "node scripts/normalize-appointment-ids.js",
     "devtools": "react-devtools",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:unit": "vitest run",
     "lint": "eslint .",
     "eject": "react-scripts eject"
   },
@@ -23,13 +26,20 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
-    "react-devtools": "^7.0.1"
+    "jsdom": "^27.0.1",
+    "react-devtools": "^7.0.1",
+    "vite": "^8.0.9",
+    "vitest": "^3.2.4"
   },
   "browserslist": {
     "production": [

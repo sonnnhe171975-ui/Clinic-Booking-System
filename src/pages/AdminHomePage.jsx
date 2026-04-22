@@ -27,6 +27,36 @@ const cards = [
     title: 'Danh sách lịch hẹn',
     description: 'Theo dõi và cập nhật trạng thái các lịch đã đặt.',
   },
+  {
+    to: '/admin/monitoring',
+    title: 'Giám sát hệ thống',
+    description: 'Theo dõi notifications và audit logs theo vòng đời nghiệp vụ.',
+  },
+  {
+    to: '/admin/medical-records',
+    title: 'Hồ sơ khám',
+    description: 'Quản lý chẩn đoán, kết luận và sinh hiệu theo từng lần khám.',
+  },
+  {
+    to: '/admin/prescriptions',
+    title: 'Đơn thuốc',
+    description: 'Theo dõi đơn thuốc đã kê, lời dặn và lịch sử điều trị.',
+  },
+  {
+    to: '/admin/payments',
+    title: 'Thanh toán',
+    description: 'Quản lý trạng thái thu phí, phương thức và lịch sử giao dịch.',
+  },
+  {
+    to: '/admin/notifications',
+    title: 'Thông báo',
+    description: 'Quản lý thông báo theo vai trò và trạng thái đã đọc/chưa đọc.',
+  },
+  {
+    to: '/admin/audit-logs',
+    title: 'Audit logs',
+    description: 'Theo dõi toàn bộ hành động thay đổi dữ liệu trong hệ thống.',
+  },
 ]
 
 function AdminHomePage() {

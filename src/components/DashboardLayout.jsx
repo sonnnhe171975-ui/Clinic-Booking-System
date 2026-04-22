@@ -15,6 +15,12 @@ function DashboardLayout({ role, title, children }) {
           { to: '/admin/schedules', label: 'Lịch khám' },
           { to: '/admin/users', label: 'Người dùng' },
           { to: '/admin/appointments', label: 'Lịch hẹn' },
+          { to: '/admin/medical-records', label: 'Hồ sơ khám' },
+          { to: '/admin/prescriptions', label: 'Đơn thuốc' },
+          { to: '/admin/payments', label: 'Thanh toán' },
+          { to: '/admin/notifications', label: 'Thông báo' },
+          { to: '/admin/audit-logs', label: 'Audit logs' },
+          { to: '/admin/monitoring', label: 'Giám sát hệ thống' },
         ]
       : role === 'doctor'
       ? [{ to: '/doctor', label: 'Lịch đăng ký', end: true }]

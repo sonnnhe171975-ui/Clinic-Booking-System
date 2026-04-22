@@ -4,28 +4,81 @@ import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import {
+  ClientTablePaginationFooter,
+  ClientTableToolbar,
+} from '../components/ClientTableControls'
+import {
   APPOINTMENT_STATUS,
   APPOINTMENT_STATUS_LABEL_VI,
   appointmentStatusVariant,
 } from '../constants/appointmentStatus'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { useClientTableView } from '../hooks/useClientTableView'
+import { joinSearchParts, scheduleDateFromString } from '../utils/tableMeta'
 
 function PatientDashboardPage() {
   const { user } = useAuthContext()
   const [appointments, setAppointments] = useState([])
+  const [schedules, setSchedules] = useState([])
+  const [doctors, setDoctors] = useState([])
   const [error, setError] = useState('')
 
   useEffect(() => {
     async function loadData() {
       try {
-        const data = await api.get(`${endpoints.appointments}?userId=${user.id}`)
-        setAppointments(data)
+        const [appts, sch, docList] = await Promise.all([
+          api.get(`${endpoints.appointments}?userId=${user.id}`),
+          api.get(endpoints.schedules),
+          api.get(endpoints.doctors),
+        ])
+        setAppointments(appts)
+        setSchedules(sch)
+        setDoctors(docList)
       } catch {
         setError('Không tải được lịch hẹn của bạn')
       }
     }
     loadData()
   }, [user.id])
+
+  const doctorById = useMemo(() => {
+    const m = {}
+    doctors.forEach((d) => {
+      m[String(d.id)] = d
+    })
+    return m
+  }, [doctors])
+
+  const appointmentMeta = useMemo(
+    () =>
+      appointments.map((item) => {
+        const sch = schedules.find((s) => String(s.id) === String(item.scheduleId))
+        const doc = doctorById[String(item.doctorId)]
+        const st = item.status || APPOINTMENT_STATUS.CONFIRMED
+        const statusLabel = APPOINTMENT_STATUS_LABEL_VI[st] || st
+        return {
+          search: joinSearchParts(
+            item.id,
+            item.doctorId,
+            doc?.name,
+            item.scheduleId,
+            sch?.date,
+            sch?.time,
+            statusLabel,
+            user.fullName,
+            item.phone,
+            item.patientName,
+            item.email,
+            item.note,
+            item.address
+          ),
+          date: scheduleDateFromString(sch?.date),
+        }
+      }),
+    [appointments, schedules, doctorById, user.fullName]
+  )
+
+  const tableView = useClientTableView(appointments, appointmentMeta)
 
   const activeCount = useMemo(
     () =>
@@ -75,11 +128,22 @@ function PatientDashboardPage() {
       <Card className="med-card">
         <Card.Body>
           <Card.Title>Danh sách lịch hẹn gần đây</Card.Title>
+          <ClientTableToolbar
+            search={tableView.search}
+            onSearchChange={tableView.setSearch}
+            dateFrom={tableView.dateFrom}
+            onDateFromChange={tableView.setDateFrom}
+            dateTo={tableView.dateTo}
+            onDateToChange={tableView.setDateTo}
+            dateSortDir={tableView.dateSortDir}
+            onToggleDateSort={tableView.toggleDateSort}
+          />
           <Table striped hover responsive className="mb-0">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Bác sĩ (ID)</th>
+                <th>STT</th>
+                <th>Bác sĩ</th>
+                <th>Ngày / ca</th>
                 <th>Lịch (ID)</th>
                 <th>Trạng thái</th>
                 <th>Bệnh nhân</th>
@@ -87,32 +151,52 @@ function PatientDashboardPage() {
               </tr>
             </thead>
             <tbody>
-              {appointments.map((item) => {
+              {tableView.pageRows.map((item, rowIdx) => {
                 const st = item.status || APPOINTMENT_STATUS.CONFIRMED
+                const sch = schedules.find((s) => String(s.id) === String(item.scheduleId))
+                const doc = doctorById[String(item.doctorId)]
                 return (
                   <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>{item.doctorId}</td>
+                    <td>{tableView.rowStt(rowIdx)}</td>
+                    <td>{doc?.name || item.doctorId}</td>
+                    <td>
+                      <div>{sch?.date || '—'}</div>
+                      <small className="text-muted">{sch?.time || '—'}</small>
+                    </td>
                     <td>{item.scheduleId}</td>
                     <td>
                       <Badge bg={appointmentStatusVariant(st)}>
                         {APPOINTMENT_STATUS_LABEL_VI[st] || st}
                       </Badge>
                     </td>
-                    <td>{user.fullName}</td>
+                    <td>{item.patientName || user.fullName}</td>
                     <td>{item.phone}</td>
                   </tr>
                 )
               })}
               {appointments.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="text-center text-muted">
+                  <td colSpan={7} className="text-center text-muted">
                     Bạn chưa có lịch hẹn nào
+                  </td>
+                </tr>
+              )}
+              {appointments.length > 0 && tableView.pageRows.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="text-center text-muted">
+                    Không có dòng nào khớp bộ lọc
                   </td>
                 </tr>
               )}
             </tbody>
           </Table>
+          <ClientTablePaginationFooter
+            page={tableView.page}
+            totalPages={tableView.totalPages}
+            onPageChange={tableView.setPage}
+            totalFiltered={tableView.totalFiltered}
+            pageSize={tableView.pageSize}
+          />
         </Card.Body>
       </Card>
     </div>

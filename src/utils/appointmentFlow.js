@@ -2,6 +2,107 @@ import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import { APPOINTMENT_STATUS, isTerminalAppointmentStatus } from '../constants/appointmentStatus'
 
+async function getUsers() {
+  return api.get(endpoints.users)
+}
+
+async function getDoctorAccountByDoctorId(doctorId) {
+  const users = await getUsers()
+  return users.find(
+    (u) => String(u.role) === 'doctor' && String(u.doctorId) === String(doctorId)
+  )
+}
+
+async function getAdminAccounts() {
+  const users = await getUsers()
+  return users.filter((u) => String(u.role) === 'admin')
+}
+
+async function createNotificationSafe(payload) {
+  try {
+    await api.post(endpoints.notifications, {
+      ...payload,
+      isRead: false,
+      createdAt: payload.createdAt || new Date().toISOString(),
+    })
+  } catch {
+    /* ignore notification write error */
+  }
+}
+
+async function createAuditLogSafe(payload) {
+  try {
+    await api.post(endpoints.auditLogs, {
+      ...payload,
+      createdAt: new Date().toISOString(),
+    })
+  } catch {
+    /* ignore audit write error */
+  }
+}
+
+async function emitBookedNotifications(appt) {
+  const [doctorAccount, admins] = await Promise.all([
+    getDoctorAccountByDoctorId(appt.doctorId),
+    getAdminAccounts(),
+  ])
+  const tasks = []
+  if (doctorAccount) {
+    tasks.push(
+      createNotificationSafe({
+        userId: String(doctorAccount.id),
+        role: 'doctor',
+        type: 'pending_appointment',
+        title: `${appt.patientName || 'Bệnh nhân'} vừa đăng ký lịch`,
+        subtitle: `Lịch #${appt.id} - ca #${appt.scheduleId}`,
+        body: 'Có lịch hẹn mới chờ xác nhận',
+        relatedId: String(appt.id),
+        to: `/doctor?appointmentId=${encodeURIComponent(appt.id)}`,
+      })
+    )
+  }
+  admins.forEach((admin) => {
+    tasks.push(
+      createNotificationSafe({
+        userId: String(admin.id),
+        role: 'admin',
+        type: 'admin_pending',
+        title: `Lịch mới chờ duyệt #${appt.id}`,
+        subtitle: `${appt.patientName || 'Bệnh nhân'} -> BS #${appt.doctorId}`,
+        body: 'Có lịch hẹn chờ bác sĩ xác nhận',
+        relatedId: String(appt.id),
+        to: '/admin/appointments',
+      })
+    )
+  })
+  await Promise.all(tasks)
+}
+
+async function emitStatusNotifications(appt, nextStatus) {
+  await createNotificationSafe({
+    userId: String(appt.userId),
+    role: 'patient',
+    type: 'appointment_status',
+    title: `Lịch #${appt.id} cập nhật trạng thái`,
+    subtitle: `Trạng thái mới: ${nextStatus}`,
+    body: 'Vui lòng kiểm tra lịch hẹn của bạn',
+    relatedId: String(appt.id),
+    to: '/patient/appointments',
+  })
+}
+
+async function getNextAppointmentId() {
+  const all = await api.get(endpoints.appointments)
+  let maxId = 0
+  all.forEach((item) => {
+    const raw = String(item.id ?? '').trim()
+    if (!/^\d+$/.test(raw)) return
+    const n = Number(raw)
+    if (n > maxId) maxId = n
+  })
+  return maxId + 1
+}
+
 /** Đã hủy / đã khám xong → không chiếm chỗ; no_show vẫn giữ suất. */
 function countsTowardFilledSlots(status) {
   const s = status || APPOINTMENT_STATUS.CONFIRMED
@@ -43,6 +144,17 @@ export async function applyAppointmentStatusChange(appt, nextStatus) {
   if (delta !== 0) {
     await adjustScheduleCurrentSlot(appt.scheduleId, delta)
   }
+  await Promise.all([
+    emitStatusNotifications(appt, nextStatus),
+    createAuditLogSafe({
+      actorId: 'system',
+      actorRole: 'system',
+      action: 'appointment_status_changed',
+      resourceType: 'appointments',
+      resourceId: String(appt.id),
+      metadata: { from: old, to: nextStatus },
+    }),
+  ])
   return { ok: true }
 }
 
@@ -105,6 +217,7 @@ export async function bookAppointmentAtomic(payload) {
   }
 
   const created = await api.post(endpoints.appointments, {
+    id: await getNextAppointmentId(),
     userId: Number(userId),
     doctorId: Number(doctorId),
     scheduleId: Number(scheduleId),
@@ -128,6 +241,17 @@ export async function bookAppointmentAtomic(payload) {
   }
 
   await adjustScheduleCurrentSlot(scheduleId, 1)
+  await Promise.all([
+    emitBookedNotifications(created),
+    createAuditLogSafe({
+      actorId: String(userId),
+      actorRole: 'patient',
+      action: 'appointment_created',
+      resourceType: 'appointments',
+      resourceId: String(created.id),
+      metadata: { doctorId: Number(doctorId), scheduleId: Number(scheduleId) },
+    }),
+  ])
   return { ok: true, appointment: created }
 }
 

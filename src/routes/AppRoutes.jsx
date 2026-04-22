@@ -8,9 +8,11 @@ import DoctorPublicRedirect from '../components/DoctorPublicRedirect'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { AuthProvider } from '../hooks/AuthProvider'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { AppStateProvider } from '../state/AppStateContext'
 import AdminAppointmentsPage from '../pages/AdminAppointmentsPage'
 import AdminCrudPage from '../pages/AdminCrudPage'
 import AdminHomePage from '../pages/AdminHomePage'
+import AdminMonitoringPage from '../pages/AdminMonitoringPage'
 import AboutPage from '../pages/AboutPage'
 import DoctorAppointmentsPage from '../pages/DoctorAppointmentsPage'
 import DoctorDetailPage from '../pages/DoctorDetailPage'
@@ -204,6 +206,66 @@ function AppShell() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/admin/monitoring"
+              element={
+                <ProtectedRoute allow={['admin']}>
+                  <DashboardLayout role="admin" title="Giám sát nghiệp vụ">
+                    <AdminMonitoringPage />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/medical-records"
+              element={
+                <ProtectedRoute allow={['admin']}>
+                  <DashboardLayout role="admin" title="Quản lý hồ sơ khám">
+                    <AdminCrudPage resource="medicalRecords" />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/prescriptions"
+              element={
+                <ProtectedRoute allow={['admin']}>
+                  <DashboardLayout role="admin" title="Quản lý đơn thuốc">
+                    <AdminCrudPage resource="prescriptions" />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/payments"
+              element={
+                <ProtectedRoute allow={['admin']}>
+                  <DashboardLayout role="admin" title="Quản lý thanh toán">
+                    <AdminCrudPage resource="payments" />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/notifications"
+              element={
+                <ProtectedRoute allow={['admin']}>
+                  <DashboardLayout role="admin" title="Quản lý thông báo">
+                    <AdminCrudPage resource="notifications" />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/audit-logs"
+              element={
+                <ProtectedRoute allow={['admin']}>
+                  <DashboardLayout role="admin" title="Quản lý audit logs">
+                    <AdminCrudPage resource="auditLogs" />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
 
             <Route path="/home" element={<Navigate to="/" replace />} />
             <Route path="*" element={<NotFoundPage />} />
@@ -217,8 +279,10 @@ function AppShell() {
 function AppRoutes() {
   return (
     <AuthProvider>
-      <AppShell />
-      <ToastContainer position="top-right" autoClose={1800} />
+      <AppStateProvider>
+        <AppShell />
+        <ToastContainer position="top-right" autoClose={1800} />
+      </AppStateProvider>
     </AuthProvider>
   )
 }

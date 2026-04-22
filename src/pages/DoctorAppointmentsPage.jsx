@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Alert, Badge, Button, ButtonGroup, Card, Col, Modal, Row, Table } from 'react-bootstrap'
+import { useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { api } from '../api/client'
 import { endpoints } from '../api/config'
@@ -9,8 +10,19 @@ import {
   appointmentStatusVariant,
   isTerminalAppointmentStatus,
 } from '../constants/appointmentStatus'
+import {
+  ClientTablePaginationFooter,
+  ClientTableToolbar,
+} from '../components/ClientTableControls'
 import { useAuthContext } from '../hooks/useAuthContext'
-import { applyAppointmentStatusChange, cancelAppointmentAndReleaseSlot } from '../utils/appointmentFlow'
+import { useClientTableView } from '../hooks/useClientTableView'
+import { joinSearchParts } from '../utils/tableMeta'
+import {
+  cancelAppointment,
+  getAppointmentById,
+  updateAppointmentStatus,
+} from '../services/appointmentService'
+import { canDoctorApplyAction, DOCTOR_ACTION } from '../utils/permissions'
 
 const SHIFT_OPTIONS = [
   { code: 'ca1', label: 'Ca 1', time: '07:00-10:00' },
@@ -47,6 +59,7 @@ function computeAge(dateOfBirth) {
 }
 
 function DoctorAppointmentsPage() {
+  const [searchParams, setSearchParams] = useSearchParams()
   const { user } = useAuthContext()
   const [appointments, setAppointments] = useState([])
   const [userMap, setUserMap] = useState({})
@@ -213,10 +226,42 @@ function DoctorAppointmentsPage() {
     })
   }, [selectedSlot, doctorAppointments])
 
+  const slotBookingMeta = useMemo(
+    () =>
+      bookingsInSelectedSlot.map((item) => {
+        const p = item.patient
+        const st = item.status || APPOINTMENT_STATUS.CONFIRMED
+        return {
+          search: joinSearchParts(
+            item.id,
+            item.patientName,
+            p?.fullName,
+            item.phone,
+            p?.phone,
+            item.email,
+            p?.email,
+            item.address,
+            p?.address,
+            p?.gender,
+            p?.underlyingConditions,
+            p?.medicalHistory,
+            item.note,
+            APPOINTMENT_STATUS_LABEL_VI[st] || st
+          ),
+          date: null,
+        }
+      }),
+    [bookingsInSelectedSlot]
+  )
+
+  const slotTableView = useClientTableView(bookingsInSelectedSlot, slotBookingMeta, {
+    enableDate: false,
+  })
+
   async function runDoctorAction(appointmentId, fn) {
     setBusyAppointmentId(appointmentId)
     try {
-      const raw = await api.get(`${endpoints.appointments}/${appointmentId}`)
+      const raw = await getAppointmentById(appointmentId)
       const res = await fn(raw)
       if (res && typeof res === 'object' && res.ok === false) {
         toast.error(res.error || 'Thất bại, vui lòng thử lại')
@@ -244,72 +289,78 @@ function DoctorAppointmentsPage() {
 
     return (
       <ButtonGroup size="sm" vertical className="w-100">
-        {st === APPOINTMENT_STATUS.PENDING && (
+        {canDoctorApplyAction(st, DOCTOR_ACTION.CONFIRM) && (
           <>
             <Button
               variant="primary"
               disabled={busy}
               onClick={() =>
                 runDoctorAction(item.id, (raw) =>
-                  applyAppointmentStatusChange(raw, APPOINTMENT_STATUS.CONFIRMED)
+                  updateAppointmentStatus(raw, APPOINTMENT_STATUS.CONFIRMED)
                 )
               }
             >
               Xác nhận lịch
             </Button>
-            <Button
-              variant="outline-danger"
-              disabled={busy}
-              onClick={() =>
-                runDoctorAction(item.id, (raw) => cancelAppointmentAndReleaseSlot(raw))
-              }
-            >
-              Từ chối (trả slot)
-            </Button>
+            {canDoctorApplyAction(st, DOCTOR_ACTION.REJECT) && (
+              <Button
+                variant="outline-danger"
+                disabled={busy}
+                onClick={() =>
+                  runDoctorAction(item.id, (raw) => cancelAppointment(raw))
+                }
+              >
+                Từ chối (trả slot)
+              </Button>
+            )}
           </>
         )}
-        {st === APPOINTMENT_STATUS.CONFIRMED && (
+        {canDoctorApplyAction(st, DOCTOR_ACTION.CHECK_IN) && (
           <>
             <Button
               variant="info"
               disabled={busy}
               onClick={() =>
                 runDoctorAction(item.id, (raw) =>
-                  applyAppointmentStatusChange(raw, APPOINTMENT_STATUS.CHECKED_IN)
+                    updateAppointmentStatus(raw, APPOINTMENT_STATUS.CHECKED_IN)
                 )
               }
             >
               Bệnh nhân đã đến
             </Button>
-            <Button
-              variant="outline-warning"
-              disabled={busy}
-              onClick={() =>
-                runDoctorAction(item.id, (raw) =>
-                  applyAppointmentStatusChange(raw, APPOINTMENT_STATUS.NO_SHOW)
-                )
-              }
-            >
-              Không đến (giữ slot)
-            </Button>
-            <Button
-              variant="outline-danger"
-              disabled={busy}
-              onClick={() =>
-                runDoctorAction(item.id, (raw) => cancelAppointmentAndReleaseSlot(raw))
-              }
-            >
-              Hủy lịch (trả slot)
-            </Button>
+            {canDoctorApplyAction(st, DOCTOR_ACTION.NO_SHOW) && (
+              <Button
+                variant="outline-warning"
+                disabled={busy}
+                onClick={() =>
+                  runDoctorAction(item.id, (raw) =>
+                    updateAppointmentStatus(raw, APPOINTMENT_STATUS.NO_SHOW)
+                  )
+                }
+              >
+                Không đến (giữ slot)
+              </Button>
+            )}
+            {canDoctorApplyAction(st, DOCTOR_ACTION.CANCEL) && (
+              <Button
+                variant="outline-danger"
+                disabled={busy}
+                onClick={() =>
+                  runDoctorAction(item.id, (raw) => cancelAppointment(raw))
+                }
+              >
+                Hủy lịch (trả slot)
+              </Button>
+            )}
           </>
         )}
-        {st === APPOINTMENT_STATUS.CHECKED_IN && (
+        {canDoctorApplyAction(st, DOCTOR_ACTION.COMPLETE) && (
           <Button
             variant="success"
             disabled={busy}
             onClick={() =>
               runDoctorAction(item.id, (raw) =>
-                applyAppointmentStatusChange(raw, APPOINTMENT_STATUS.COMPLETED)
+                updateAppointmentStatus(raw, APPOINTMENT_STATUS.COMPLETED)
               )
             }
           >
@@ -320,7 +371,7 @@ function DoctorAppointmentsPage() {
     )
   }
 
-  function onOpenPendingNotification(item) {
+  const onOpenPendingNotification = useCallback((item) => {
     const schedule = item.schedule || schedules.find((s) => String(s.id) === String(item.scheduleId))
     if (!schedule) {
       toast.error('Không tìm thấy ca làm việc để mở')
@@ -334,7 +385,18 @@ function DoctorAppointmentsPage() {
         time: schedule.time,
       }
     setSelectedSlot({ schedule, shift })
-  }
+  }, [schedules])
+
+  useEffect(() => {
+    const appointmentId = String(searchParams.get('appointmentId') || '').trim()
+    if (!appointmentId) return
+    const appointment = doctorAppointments.find((item) => String(item.id) === appointmentId)
+    if (!appointment || !appointment.schedule) return
+    onOpenPendingNotification(appointment)
+    const nextParams = new URLSearchParams(searchParams)
+    nextParams.delete('appointmentId')
+    setSearchParams(nextParams, { replace: true })
+  }, [doctorAppointments, onOpenPendingNotification, searchParams, setSearchParams])
 
   return (
     <div>
@@ -530,7 +592,20 @@ function DoctorAppointmentsPage() {
               {bookingsInSelectedSlot.length === 0 ? (
                 <p className="text-muted mb-0">Chưa có bệnh nhân đặt lịch trong ca này.</p>
               ) : (
-                bookingsInSelectedSlot.map((item) => {
+                <>
+                  <ClientTableToolbar
+                    search={slotTableView.search}
+                    onSearchChange={slotTableView.setSearch}
+                    dateFrom={slotTableView.dateFrom}
+                    onDateFromChange={slotTableView.setDateFrom}
+                    dateTo={slotTableView.dateTo}
+                    onDateToChange={slotTableView.setDateTo}
+                    dateSortDir={slotTableView.dateSortDir}
+                    onToggleDateSort={slotTableView.toggleDateSort}
+                    showDateFilters={false}
+                    showDateSort={false}
+                  />
+                  {slotTableView.pageRows.map((item, rowIdx) => {
                   const p = item.patient
                   const name = item.patientName || p?.fullName || '-'
                   const email = p?.email || item.email || '-'
@@ -555,7 +630,8 @@ function DoctorAppointmentsPage() {
                             )}
                           </div>
                           <div className="d-flex flex-column align-items-end gap-1">
-                            <Badge bg="info">Hẹn #{item.id}</Badge>
+                            <Badge bg="info">STT {slotTableView.rowStt(rowIdx)}</Badge>
+                            <small className="text-muted ms-1">(mã {item.id})</small>
                             <Badge bg={appointmentStatusVariant(st)}>
                               {APPOINTMENT_STATUS_LABEL_VI[st] || st}
                             </Badge>
@@ -592,7 +668,18 @@ function DoctorAppointmentsPage() {
                       </Card.Body>
                     </Card>
                   )
-                })
+                })}
+                  {slotTableView.totalFiltered === 0 && (
+                    <p className="text-muted mb-0">Không có bệnh nhân khớp tìm kiếm.</p>
+                  )}
+                  <ClientTablePaginationFooter
+                    page={slotTableView.page}
+                    totalPages={slotTableView.totalPages}
+                    onPageChange={slotTableView.setPage}
+                    totalFiltered={slotTableView.totalFiltered}
+                    pageSize={slotTableView.pageSize}
+                  />
+                </>
               )}
             </>
           )}

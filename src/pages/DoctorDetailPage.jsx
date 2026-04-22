@@ -16,8 +16,16 @@ import { toast } from 'react-toastify'
 import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import BackButton from '../components/BackButton'
+import {
+  ClientTablePaginationFooter,
+  ClientTableToolbar,
+} from '../components/ClientTableControls'
 import { useAuthContext } from '../hooks/useAuthContext'
-import { bookAppointmentAtomic } from '../utils/appointmentFlow'
+import { useClientTableView } from '../hooks/useClientTableView'
+import { joinSearchParts, scheduleDateFromString } from '../utils/tableMeta'
+import { bookAppointment } from '../services/appointmentService'
+import { canPatientBookAppointment } from '../utils/permissions'
+import { bookingSchema, getFirstZodError } from '../utils/validationSchemas'
 
 const SHIFT_OPTIONS = [
   { code: 'ca1', label: 'Ca 1', time: '07:00-10:00' },
@@ -78,6 +86,30 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
     [schedules]
   )
 
+  const scheduleTableMeta = useMemo(
+    () =>
+      schedules.map((item) => {
+        const isFull = item.currentSlot >= item.maxSlot
+        return {
+          search: joinSearchParts(
+            item.id,
+            item.date,
+            item.time,
+            getShiftLabel(item.time),
+            item.room,
+            item.currentSlot,
+            item.maxSlot,
+            item.status,
+            isFull ? 'đầy' : 'còn chỗ'
+          ),
+          date: scheduleDateFromString(item.date),
+        }
+      }),
+    [schedules]
+  )
+
+  const scheduleTableView = useClientTableView(schedules, scheduleTableMeta)
+
   async function refreshSchedules() {
     const [doctorData, scheduleData] = await Promise.all([
       api.get(`${endpoints.doctors}/${id}`),
@@ -95,14 +127,24 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
       navigate('/login')
       return
     }
-    if (!patientName || !phone || !selectedScheduleId) {
-      setError('Vui lòng nhập đủ thông tin bắt buộc')
+    if (!canPatientBookAppointment(user.role)) {
+      setError('Chỉ tài khoản bệnh nhân mới được đặt lịch')
       return
     }
-    if (!/^\d{9,11}$/.test(phone)) {
-      setError('Số điện thoại không hợp lệ')
+
+    const parsed = bookingSchema.safeParse({
+      patientName,
+      phone,
+      email: String(email || '').trim(),
+      address,
+      note,
+      selectedScheduleId,
+    })
+    if (!parsed.success) {
+      setError(getFirstZodError(parsed.error))
       return
     }
+    const bookingData = parsed.data
 
     const schedule = schedules.find((item) => String(item.id) === selectedScheduleId)
     if (!schedule || schedule.currentSlot >= schedule.maxSlot) {
@@ -112,15 +154,15 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
 
     setSubmitting(true)
     try {
-      const res = await bookAppointmentAtomic({
+      const res = await bookAppointment({
         userId: user.id,
         doctorId: Number(id),
         scheduleId: Number(selectedScheduleId),
-        patientName,
-        phone,
-        email: email || user.email || '',
-        address: address || user.address || '',
-        note,
+        patientName: bookingData.patientName,
+        phone: bookingData.phone,
+        email: bookingData.email || user.email || '',
+        address: bookingData.address || user.address || '',
+        note: bookingData.note || '',
       })
       if (!res.ok) {
         setError(res.error || 'Đặt lịch thất bại')
@@ -167,9 +209,20 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
             <Card className="mt-3 med-card">
               <Card.Body>
                 <Card.Title>Lịch khám</Card.Title>
+                <ClientTableToolbar
+                  search={scheduleTableView.search}
+                  onSearchChange={scheduleTableView.setSearch}
+                  dateFrom={scheduleTableView.dateFrom}
+                  onDateFromChange={scheduleTableView.setDateFrom}
+                  dateTo={scheduleTableView.dateTo}
+                  onDateToChange={scheduleTableView.setDateTo}
+                  dateSortDir={scheduleTableView.dateSortDir}
+                  onToggleDateSort={scheduleTableView.toggleDateSort}
+                />
                 <Table striped hover responsive className="mb-0">
                   <thead>
                     <tr>
+                      <th>STT</th>
                       <th>Ngày</th>
                       <th>Ca</th>
                       <th>Giờ</th>
@@ -178,10 +231,11 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {schedules.map((item) => {
+                    {scheduleTableView.pageRows.map((item, rowIdx) => {
                       const isFull = item.currentSlot >= item.maxSlot
                       return (
                         <tr key={item.id}>
+                          <td>{scheduleTableView.rowStt(rowIdx)}</td>
                           <td>{item.date}</td>
                           <td>{getShiftLabel(item.time)}</td>
                           <td>{item.time}</td>
@@ -196,8 +250,29 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
                         </tr>
                       )
                     })}
+                    {schedules.length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="text-center text-muted">
+                          Chưa có lịch khám
+                        </td>
+                      </tr>
+                    )}
+                    {schedules.length > 0 && scheduleTableView.pageRows.length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="text-center text-muted">
+                          Không có dòng nào khớp bộ lọc
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </Table>
+                <ClientTablePaginationFooter
+                  page={scheduleTableView.page}
+                  totalPages={scheduleTableView.totalPages}
+                  onPageChange={scheduleTableView.setPage}
+                  totalFiltered={scheduleTableView.totalFiltered}
+                  pageSize={scheduleTableView.pageSize}
+                />
               </Card.Body>
             </Card>
           </Col>

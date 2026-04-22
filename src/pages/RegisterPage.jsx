@@ -3,14 +3,7 @@ import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../api/client'
 import { endpoints } from '../api/config'
-
-function normalizePhoneDigits(value) {
-  return String(value || '').replace(/\D/g, '')
-}
-
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim())
-}
+import { getFirstZodError, registerSchema } from '../utils/validationSchemas'
 
 function RegisterPage() {
   const navigate = useNavigate()
@@ -35,32 +28,17 @@ function RegisterPage() {
     setError('')
     setSuccess('')
 
-    if (!form.fullName?.trim() || !form.username?.trim() || !form.password) {
-      setError('Vui lòng nhập đầy đủ họ tên, tên đăng nhập và mật khẩu')
+    const parsed = registerSchema.safeParse(form)
+    if (!parsed.success) {
+      setError(getFirstZodError(parsed.error))
       return
     }
-    if (!form.email?.trim() || !form.phone?.trim()) {
-      setError('Vui lòng nhập email và số điện thoại')
-      return
-    }
-    if (!isValidEmail(form.email)) {
-      setError('Email không hợp lệ')
-      return
-    }
-    const phoneDigits = normalizePhoneDigits(form.phone)
-    if (phoneDigits.length < 9 || phoneDigits.length > 11) {
-      setError('Số điện thoại không hợp lệ (9–11 chữ số)')
-      return
-    }
-    if (form.password !== form.confirmPassword) {
-      setError('Mật khẩu xác nhận không khớp')
-      return
-    }
+    const normalized = parsed.data
 
     setSubmitting(true)
     try {
       const users = await api.get(endpoints.users)
-      const uname = form.username.toLowerCase().trim()
+      const uname = normalized.username.toLowerCase().trim()
       const existed = users.some(
         (item) => String(item.username || '').toLowerCase().trim() === uname
       )
@@ -70,7 +48,8 @@ function RegisterPage() {
       }
 
       const emailTaken = users.some(
-        (item) => String(item.email || '').toLowerCase().trim() === form.email.toLowerCase().trim()
+        (item) =>
+          String(item.email || '').toLowerCase().trim() === normalized.email.toLowerCase().trim()
       )
       if (emailTaken) {
         setError('Email này đã được dùng cho tài khoản khác')
@@ -78,12 +57,12 @@ function RegisterPage() {
       }
 
       await api.post(endpoints.users, {
-        fullName: form.fullName.trim(),
-        username: form.username.trim(),
-        password: form.password.trim(),
+        fullName: normalized.fullName.trim(),
+        username: normalized.username.trim(),
+        password: normalized.password.trim(),
         role: 'patient',
-        email: form.email.trim(),
-        phone: phoneDigits,
+        email: normalized.email.trim(),
+        phone: normalized.phone,
         address: '',
       })
 

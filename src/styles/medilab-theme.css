@@ -202,7 +202,7 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
-/* Trang quản trị: desktop 3 + 2 (hàng dưới hai thẻ căn giữa); mobile xếp chồng / 2 cột */
+/* Trang quản trị: layout card cân bằng theo số cột cố định */
 .admin-module-grid {
   display: grid;
   gap: 1.25rem;
@@ -217,21 +217,7 @@ h1, h2, h3, h4, h5, h6,
 
 @media (min-width: 992px) {
   .admin-module-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
-  .admin-module-grid .admin-dash-card:nth-child(1),
-  .admin-module-grid .admin-dash-card:nth-child(2),
-  .admin-module-grid .admin-dash-card:nth-child(3) {
-    grid-column: span 2;
-  }
-
-  .admin-module-grid .admin-dash-card:nth-child(4) {
-    grid-column: 2 / span 2;
-  }
-
-  .admin-module-grid .admin-dash-card:nth-child(5) {
-    grid-column: 4 / span 2;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -242,4 +228,55 @@ h1, h2, h3, h4, h5, h6,
 
 .admin-dash-card:hover {
   box-shadow: 0 8px 28px rgba(25, 119, 204, 0.12);
+}
+
+/* Phân trang dạng số — nền sáng, đồng bộ theme Medilab */
+.med-numbered-pagination {
+  background: linear-gradient(180deg, #fbfdff 0%, #f4f9fd 100%);
+  border: 1px solid #e0eaf5;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(25, 119, 204, 0.08);
+}
+
+.med-numbered-pagination .med-page-link {
+  color: var(--med-primary) !important;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none !important;
+  line-height: 1.35;
+  min-width: 2.25rem;
+  text-align: center;
+  border-radius: 8px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.med-numbered-pagination .med-page-link:hover {
+  background: var(--med-primary-soft);
+  color: #145a9e !important;
+  text-decoration: none !important;
+}
+
+.med-numbered-pagination .med-page-link:focus-visible {
+  outline: 2px solid var(--med-primary);
+  outline-offset: 2px;
+}
+
+.med-numbered-pagination .med-page-active {
+  background: var(--med-primary);
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: default;
+  user-select: none;
+  min-width: 2.25rem;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(25, 119, 204, 0.25);
+}
+
+.med-numbered-pagination .med-page-ellipsis {
+  color: #8aa0b4;
+  padding: 0 0.2rem;
+  user-select: none;
+  font-size: 0.9rem;
 }

@@ -6,4 +6,9 @@ export const endpoints = {
   schedules: '/schedules',
   appointments: '/appointments',
   users: '/users',
+  notifications: '/notifications',
+  medicalRecords: '/medicalRecords',
+  prescriptions: '/prescriptions',
+  payments: '/payments',
+  auditLogs: '/auditLogs',
 }

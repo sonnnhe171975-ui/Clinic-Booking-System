@@ -63,7 +63,7 @@ function LoginPage() {
                   <Badge bg="primary">Secure Auth</Badge>
                 </div>
                 <Card.Text className="text-muted small mb-4">
-                  Admin: admin / 123456 — Bệnh nhân: user1 / 123456
+                  Admin: admin / 123456 — Bệnh nhân: tranhoa / 123456 -- Bác sĩ : doctor1,2,3,4 /123456
                 </Card.Text>
                 {error && <Alert variant="danger">{error}</Alert>}
                 <Form onSubmit={onSubmit}>

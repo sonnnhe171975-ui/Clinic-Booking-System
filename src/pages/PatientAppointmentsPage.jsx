@@ -4,12 +4,23 @@ import { toast } from 'react-toastify'
 import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import {
+  ClientTablePaginationFooter,
+  ClientTableToolbar,
+} from '../components/ClientTableControls'
+import {
+  APPOINTMENT_STATUS,
   APPOINTMENT_STATUS_LABEL_VI,
   appointmentStatusVariant,
-  canPatientCancelOrReschedule,
 } from '../constants/appointmentStatus'
 import { useAuthContext } from '../hooks/useAuthContext'
-import { cancelAppointmentAndReleaseSlot, rescheduleAppointment } from '../utils/appointmentFlow'
+import { useClientTableView } from '../hooks/useClientTableView'
+import { joinSearchParts, scheduleDateFromString } from '../utils/tableMeta'
+import {
+  cancelAppointment,
+  changeAppointmentSchedule,
+  getAppointmentById,
+} from '../services/appointmentService'
+import { canPatientManageAppointmentStatus } from '../utils/permissions'
 
 function PatientAppointmentsPage() {
   const { user } = useAuthContext()
@@ -60,11 +71,43 @@ function PatientAppointmentsPage() {
     })
   }, [schedules, rescheduleTarget])
 
+  const appointmentMeta = useMemo(
+    () =>
+      appointments.map((item) => {
+        const sch = schedules.find((s) => String(s.id) === String(item.scheduleId))
+        const doc = doctorById[String(item.doctorId)]
+        const st = item.status || APPOINTMENT_STATUS.CONFIRMED
+        const statusLabel = APPOINTMENT_STATUS_LABEL_VI[st] || st
+        return {
+          search: joinSearchParts(
+            item.id,
+            item.doctorId,
+            doc?.name,
+            item.scheduleId,
+            sch?.date,
+            sch?.time,
+            sch?.room,
+            statusLabel,
+            item.patientName,
+            user.fullName,
+            item.phone,
+            item.email,
+            item.note,
+            item.address
+          ),
+          date: scheduleDateFromString(sch?.date),
+        }
+      }),
+    [appointments, schedules, doctorById, user.fullName]
+  )
+
+  const tableView = useClientTableView(appointments, appointmentMeta)
+
   async function onCancel(item) {
     setBusyId(item.id)
     try {
-      const raw = await api.get(`${endpoints.appointments}/${item.id}`)
-      const res = await cancelAppointmentAndReleaseSlot(raw)
+      const raw = await getAppointmentById(item.id)
+      const res = await cancelAppointment(raw)
       if (!res.ok) {
         toast.error(res.error || 'Không thể hủy')
         return
@@ -82,8 +125,8 @@ function PatientAppointmentsPage() {
     if (!rescheduleTarget || !newScheduleId) return
     setBusyId(rescheduleTarget.id)
     try {
-      const raw = await api.get(`${endpoints.appointments}/${rescheduleTarget.id}`)
-      const res = await rescheduleAppointment(raw, Number(newScheduleId), {
+      const raw = await getAppointmentById(rescheduleTarget.id)
+      const res = await changeAppointmentSchedule(raw, Number(newScheduleId), {
         userId: user.id,
         doctorId: raw.doctorId,
         patientName: raw.patientName || user.fullName,
@@ -113,10 +156,20 @@ function PatientAppointmentsPage() {
       <Card className="med-card">
         <Card.Body>
           <Card.Title>Lịch hẹn của tôi</Card.Title>
+          <ClientTableToolbar
+            search={tableView.search}
+            onSearchChange={tableView.setSearch}
+            dateFrom={tableView.dateFrom}
+            onDateFromChange={tableView.setDateFrom}
+            dateTo={tableView.dateTo}
+            onDateToChange={tableView.setDateTo}
+            dateSortDir={tableView.dateSortDir}
+            onToggleDateSort={tableView.toggleDateSort}
+          />
           <Table striped bordered hover responsive className="mb-0">
             <thead>
               <tr>
-                <th>ID</th>
+                <th>STT</th>
                 <th>Bác sĩ</th>
                 <th>Ngày / ca</th>
                 <th>Trạng thái</th>
@@ -126,14 +179,14 @@ function PatientAppointmentsPage() {
               </tr>
             </thead>
             <tbody>
-              {appointments.map((item) => {
+              {tableView.pageRows.map((item, rowIdx) => {
                 const sch = schedules.find((s) => String(s.id) === String(item.scheduleId))
                 const doc = doctorById[String(item.doctorId)]
-                const st = item.status || 'confirmed'
-                const canChange = canPatientCancelOrReschedule(st)
+                const st = item.status || APPOINTMENT_STATUS.CONFIRMED
+                const canChange = canPatientManageAppointmentStatus(st)
                 return (
                   <tr key={item.id}>
-                    <td>{item.id}</td>
+                    <td>{tableView.rowStt(rowIdx)}</td>
                     <td>{doc?.name || item.doctorId}</td>
                     <td>
                       <div>{sch?.date || '-'}</div>
@@ -183,8 +236,22 @@ function PatientAppointmentsPage() {
                   </td>
                 </tr>
               )}
+              {appointments.length > 0 && tableView.pageRows.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="text-center text-muted">
+                    Không có dòng nào khớp bộ lọc
+                  </td>
+                </tr>
+              )}
             </tbody>
           </Table>
+          <ClientTablePaginationFooter
+            page={tableView.page}
+            totalPages={tableView.totalPages}
+            onPageChange={tableView.setPage}
+            totalFiltered={tableView.totalFiltered}
+            pageSize={tableView.pageSize}
+          />
         </Card.Body>
       </Card>
 

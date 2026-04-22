@@ -4,23 +4,32 @@ import { toast } from 'react-toastify'
 import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import {
+  ClientTablePaginationFooter,
+  ClientTableToolbar,
+} from '../components/ClientTableControls'
+import {
   APPOINTMENT_STATUS,
   APPOINTMENT_STATUS_LABEL_VI,
   APPOINTMENT_STATUS_OPTIONS,
   appointmentStatusVariant,
 } from '../constants/appointmentStatus'
-import { applyAppointmentStatusChange } from '../utils/appointmentFlow'
+import { useClientTableView } from '../hooks/useClientTableView'
+import { getAppointmentById, getAllAppointments, updateAppointmentStatus } from '../services/appointmentService'
+import { canAdminUpdateAppointmentStatus } from '../utils/permissions'
+import { joinSearchParts, scheduleDateFromString } from '../utils/tableMeta'
 
 function AdminAppointmentsPage() {
   const [appointments, setAppointments] = useState([])
+  const [schedules, setSchedules] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [busyId, setBusyId] = useState(null)
   const [draftStatus, setDraftStatus] = useState({})
 
   const reload = useCallback(async () => {
-    const data = await api.get(endpoints.appointments)
+    const [data, sch] = await Promise.all([getAllAppointments(), api.get(endpoints.schedules)])
     setAppointments(data)
+    setSchedules(sch)
     const nextDraft = {}
     data.forEach((a) => {
       nextDraft[a.id] = a.status || APPOINTMENT_STATUS.CONFIRMED
@@ -50,7 +59,41 @@ function AdminAppointmentsPage() {
     []
   )
 
+  const appointmentMeta = useMemo(
+    () =>
+      appointments.map((item) => {
+        const sch = schedules.find((s) => String(s.id) === String(item.scheduleId))
+        const st = item.status || APPOINTMENT_STATUS.CONFIRMED
+        const statusLabel = APPOINTMENT_STATUS_LABEL_VI[st] || st
+        return {
+          search: joinSearchParts(
+            item.id,
+            item.userId,
+            item.doctorId,
+            item.scheduleId,
+            item.patientName,
+            item.phone,
+            item.email,
+            item.note,
+            item.address,
+            sch?.date,
+            sch?.time,
+            sch?.room,
+            statusLabel
+          ),
+          date: scheduleDateFromString(sch?.date),
+        }
+      }),
+    [appointments, schedules]
+  )
+
+  const tableView = useClientTableView(appointments, appointmentMeta)
+
   async function onUpdateStatus(item) {
+    if (!canAdminUpdateAppointmentStatus()) {
+      toast.error('Bạn không có quyền cập nhật trạng thái lịch hẹn')
+      return
+    }
     const current = item.status || APPOINTMENT_STATUS.CONFIRMED
     const next = draftStatus[item.id]
     if (!next || next === current) {
@@ -59,8 +102,8 @@ function AdminAppointmentsPage() {
     }
     setBusyId(item.id)
     try {
-      const raw = await api.get(`${endpoints.appointments}/${item.id}`)
-      const res = await applyAppointmentStatusChange(raw, next)
+      const raw = await getAppointmentById(item.id)
+      const res = await updateAppointmentStatus(raw, next)
       if (!res.ok) {
         toast.error(res.error || 'Không thể cập nhật')
         return
@@ -94,13 +137,25 @@ function AdminAppointmentsPage() {
       ) : (
         <Card className="med-card">
           <Card.Body>
+            <ClientTableToolbar
+              search={tableView.search}
+              onSearchChange={tableView.setSearch}
+              dateFrom={tableView.dateFrom}
+              onDateFromChange={tableView.setDateFrom}
+              dateTo={tableView.dateTo}
+              onDateToChange={tableView.setDateTo}
+              dateSortDir={tableView.dateSortDir}
+              onToggleDateSort={tableView.toggleDateSort}
+            />
             <Table striped bordered hover responsive className="mb-0 small">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>STT</th>
+                  <th>Mã hẹn</th>
                   <th>Người dùng</th>
                   <th>Bác sĩ</th>
-                  <th>Lịch</th>
+                  <th>Ngày / ca</th>
+                  <th>Lịch (ID)</th>
                   <th>Tên bệnh nhân</th>
                   <th>Điện thoại</th>
                   <th>Hiện tại</th>
@@ -109,15 +164,21 @@ function AdminAppointmentsPage() {
                 </tr>
               </thead>
               <tbody>
-                {appointments.map((item) => {
+                {tableView.pageRows.map((item, rowIdx) => {
                   const st = item.status || APPOINTMENT_STATUS.CONFIRMED
                   const selected = draftStatus[item.id] ?? st
                   const unchanged = selected === st
+                  const sch = schedules.find((s) => String(s.id) === String(item.scheduleId))
                   return (
                     <tr key={item.id}>
+                      <td>{tableView.rowStt(rowIdx)}</td>
                       <td>{item.id}</td>
                       <td>{item.userId}</td>
                       <td>{item.doctorId}</td>
+                      <td>
+                        <div>{sch?.date || '—'}</div>
+                        <small className="text-muted">{sch?.time || '—'}</small>
+                      </td>
                       <td>{item.scheduleId}</td>
                       <td>{item.patientName}</td>
                       <td>{item.phone}</td>
@@ -160,13 +221,27 @@ function AdminAppointmentsPage() {
                 })}
                 {appointments.length === 0 && (
                   <tr>
-                    <td colSpan={9} className="text-center text-muted">
+                    <td colSpan={11} className="text-center text-muted">
                       Chưa có lịch hẹn nào
+                    </td>
+                  </tr>
+                )}
+                {appointments.length > 0 && tableView.pageRows.length === 0 && (
+                  <tr>
+                    <td colSpan={11} className="text-center text-muted">
+                      Không có dòng nào khớp bộ lọc
                     </td>
                   </tr>
                 )}
               </tbody>
             </Table>
+            <ClientTablePaginationFooter
+              page={tableView.page}
+              totalPages={tableView.totalPages}
+              onPageChange={tableView.setPage}
+              totalFiltered={tableView.totalFiltered}
+              pageSize={tableView.pageSize}
+            />
           </Card.Body>
         </Card>
       )}
