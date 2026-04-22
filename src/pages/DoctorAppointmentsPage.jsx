@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Alert, Badge, Button, ButtonGroup, Card, Col, Modal, Row, Table } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { api } from '../api/client'
@@ -56,6 +56,9 @@ function DoctorAppointmentsPage() {
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [weekOffset, setWeekOffset] = useState(0)
   const [busyAppointmentId, setBusyAppointmentId] = useState(null)
+  const weeklyScheduleRef = useRef(null)
+  const knownPendingIdsRef = useRef(new Set())
+  const initializedNotificationRef = useRef(false)
 
   const reloadCore = useCallback(async () => {
     const [appointmentData, scheduleData, doctorData] = await Promise.all([
@@ -77,6 +80,15 @@ function DoctorAppointmentsPage() {
       }
     }
     loadData()
+  }, [reloadCore])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      reloadCore().catch(() => {
+        /* ignore polling error */
+      })
+    }, 8000)
+    return () => clearInterval(timer)
   }, [reloadCore])
 
   const doctorProfile = useMemo(() => {
@@ -143,6 +155,29 @@ function DoctorAppointmentsPage() {
       }).length,
     [doctorAppointments]
   )
+
+  const pendingNotifications = useMemo(() => {
+    return doctorAppointments
+      .filter((item) => (item.status || APPOINTMENT_STATUS.CONFIRMED) === APPOINTMENT_STATUS.PENDING)
+      .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+      .slice(0, 6)
+  }, [doctorAppointments])
+
+  useEffect(() => {
+    const nextIds = new Set(pendingNotifications.map((item) => String(item.id)))
+    if (!initializedNotificationRef.current) {
+      knownPendingIdsRef.current = nextIds
+      initializedNotificationRef.current = true
+      return
+    }
+    pendingNotifications.forEach((item) => {
+      const id = String(item.id)
+      if (knownPendingIdsRef.current.has(id)) return
+      const patientName = item.patientName || item.patient?.fullName || 'Bệnh nhân'
+      toast.info(`${patientName} vừa đăng ký lịch mới, cần xác nhận`, { autoClose: 2500 })
+    })
+    knownPendingIdsRef.current = nextIds
+  }, [pendingNotifications])
 
   const doctorSchedules = useMemo(
     () => schedules.filter((item) => String(item.doctorId) === String(doctorProfile?.id)),
@@ -285,6 +320,22 @@ function DoctorAppointmentsPage() {
     )
   }
 
+  function onOpenPendingNotification(item) {
+    const schedule = item.schedule || schedules.find((s) => String(s.id) === String(item.scheduleId))
+    if (!schedule) {
+      toast.error('Không tìm thấy ca làm việc để mở')
+      return
+    }
+    weeklyScheduleRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const shift =
+      SHIFT_OPTIONS.find((option) => option.time === schedule.time) || {
+        code: 'custom',
+        label: 'Ca',
+        time: schedule.time,
+      }
+    setSelectedSlot({ schedule, shift })
+  }
+
   return (
     <div>
       {error && <Alert variant="danger">{error}</Alert>}
@@ -308,9 +359,52 @@ function DoctorAppointmentsPage() {
             </Card.Body>
           </Card>
         </Col>
+        <Col xs={12}>
+          <Card className="med-card border-warning-subtle">
+            <Card.Body>
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <Card.Title className="mb-0">Thong bao lich moi dang ky</Card.Title>
+                <div className="d-flex align-items-center gap-2">
+                  <Badge bg={pendingNotifications.length ? 'warning' : 'secondary'} text="dark">
+                    {pendingNotifications.length}
+                  </Badge>
+                  <Button size="sm" variant="outline-secondary" onClick={reloadCore}>
+                    Làm mới
+                  </Button>
+                </div>
+              </div>
+              {pendingNotifications.length === 0 ? (
+                <p className="small text-muted mb-0">Hien khong co lich moi cho ban xac nhan.</p>
+              ) : (
+                <div className="d-flex flex-column gap-2">
+                  {pendingNotifications.map((item) => {
+                    const p = item.patient
+                    const patientName = item.patientName || p?.fullName || 'Benh nhan'
+                    const slotText = item.schedule
+                      ? `${item.schedule.date} (${item.schedule.time})`
+                      : `Lich #${item.scheduleId}`
+                    return (
+                      <div
+                        key={item.id}
+                        className="d-flex flex-wrap align-items-center justify-content-between gap-2 border rounded px-2 py-2"
+                      >
+                        <div className="small">
+                          <strong>{patientName}</strong> vua dang ky kham - {slotText}
+                        </div>
+                        <Button size="sm" variant="outline-primary" onClick={() => onOpenPendingNotification(item)}>
+                          Xem va xac nhan
+                        </Button>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
       </Row>
 
-      <Card className="med-card">
+      <Card className="med-card" ref={weeklyScheduleRef}>
         <Card.Body className="mb-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <Card.Title className="mb-0">Bảng lịch bác sĩ theo tuần</Card.Title>

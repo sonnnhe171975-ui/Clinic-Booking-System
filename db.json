@@ -2271,7 +2271,7 @@
       "date": "2026-04-22",
       "time": "07:00-10:00",
       "maxSlot": 3,
-      "currentSlot": 0,
+      "currentSlot": 1,
       "status": "available",
       "room": "A103",
       "fee": 250000
@@ -2326,7 +2326,7 @@
       "date": "2026-04-22",
       "time": "10:00-12:20",
       "maxSlot": 3,
-      "currentSlot": 0,
+      "currentSlot": 1,
       "status": "available",
       "room": "B202",
       "fee": 220000
@@ -2370,7 +2370,7 @@
       "date": "2026-04-22",
       "time": "10:00-12:20",
       "maxSlot": 5,
-      "currentSlot": 2,
+      "currentSlot": 3,
       "status": "available",
       "room": "C303",
       "fee": 300000
@@ -23446,6 +23446,45 @@
       "note": "Xét nghiệm lại cholesterol",
       "createdAt": "2026-05-30T13:23:00.000Z",
       "status": "confirmed"
+    },
+    {
+      "userId": 3,
+      "doctorId": 3,
+      "scheduleId": 209,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "đói",
+      "status": "pending",
+      "createdAt": "2026-04-22T07:08:17.779Z",
+      "id": "u4H0TchB_jU"
+    },
+    {
+      "userId": 3,
+      "doctorId": 2,
+      "scheduleId": 205,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "đói",
+      "status": "confirmed",
+      "createdAt": "2026-04-22T07:09:29.624Z",
+      "id": "D0rM4uEPqC0"
+    },
+    {
+      "userId": 3,
+      "doctorId": 1,
+      "scheduleId": 200,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "hết tiền",
+      "status": "pending",
+      "createdAt": "2026-04-22T07:17:37.164Z",
+      "id": "_GC-BpO-UQY"
     }
   ],
   "users": [
@@ -23606,6 +23645,28 @@
       "gender": "female",
       "underlyingConditions": "Nhịp tim thỉnh thoảng, ECG trước đó bình thường",
       "medicalHistory": "10/2025: Khám tim mạch, loại trừ bệnh lý nặng. Khuyến nghị giảm caffein."
+    },
+    {
+      "id": "13",
+      "username": "doctor3",
+      "password": "123456",
+      "fullName": "BS Le Van Cung",
+      "role": "doctor",
+      "doctorId": 3,
+      "email": "levanc@clinicbooking.vn",
+      "phone": "0905667788",
+      "address": "45 Hoang Dieu, Hai Chau, Da Nang"
+    },
+    {
+      "id": "14",
+      "username": "doctor4",
+      "password": "123456",
+      "fullName": "BS Pham Minh Duong",
+      "role": "doctor",
+      "doctorId": 4,
+      "email": "phamminhd@clinicbooking.vn",
+      "phone": "0905778899",
+      "address": "22 Phan Chau Trinh, Hai Chau, Da Nang"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

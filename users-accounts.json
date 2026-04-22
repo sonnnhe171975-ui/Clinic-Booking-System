@@ -156,5 +156,27 @@
     "gender": "female",
     "underlyingConditions": "Nhịp tim thỉnh thoảng, ECG trước đó bình thường",
     "medicalHistory": "10/2025: Khám tim mạch, loại trừ bệnh lý nặng. Khuyến nghị giảm caffein."
+  },
+  {
+    "id": "13",
+    "username": "doctor3",
+    "password": "123456",
+    "fullName": "BS Le Van Cung",
+    "role": "doctor",
+    "doctorId": 3,
+    "email": "levanc@clinicbooking.vn",
+    "phone": "0905667788",
+    "address": "45 Hoang Dieu, Hai Chau, Da Nang"
+  },
+  {
+    "id": "14",
+    "username": "doctor4",
+    "password": "123456",
+    "fullName": "BS Pham Minh Duong",
+    "role": "doctor",
+    "doctorId": 4,
+    "email": "phamminhd@clinicbooking.vn",
+    "phone": "0905778899",
+    "address": "22 Phan Chau Trinh, Hai Chau, Da Nang"
   }
 ]
