@@ -24,6 +24,7 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import { useClientTableView } from '../hooks/useClientTableView'
 import { joinSearchParts, scheduleDateFromString } from '../utils/tableMeta'
 import { bookAppointment } from '../services/appointmentService'
+import { isScheduleInPast } from '../utils/appointmentFlow'
 import { canPatientBookAppointment } from '../utils/permissions'
 import { bookingSchema, getFirstZodError } from '../utils/validationSchemas'
 
@@ -82,7 +83,7 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
   }, [id])
 
   const availableSchedules = useMemo(
-    () => schedules.filter((item) => item.currentSlot < item.maxSlot),
+    () => schedules.filter((item) => item.currentSlot < item.maxSlot && !isScheduleInPast(item)),
     [schedules]
   )
 
@@ -149,6 +150,10 @@ function DoctorDetailPage({ backFallback = '/doctors' }) {
     const schedule = schedules.find((item) => String(item.id) === selectedScheduleId)
     if (!schedule || schedule.currentSlot >= schedule.maxSlot) {
       setError('Lịch này đã đầy')
+      return
+    }
+    if (isScheduleInPast(schedule)) {
+      setError('Không thể đặt lịch trong quá khứ')
       return
     }
 

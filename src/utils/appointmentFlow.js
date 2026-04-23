@@ -118,6 +118,23 @@ function slotDeltaForStatusChange(oldStatus, newStatus) {
   return b - a
 }
 
+function parseScheduleStartDateTime(schedule) {
+  const date = String(schedule?.date || '').trim()
+  const range = String(schedule?.time || '').trim()
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null
+  const startTime = range.split('-')[0]?.trim()
+  if (!/^\d{2}:\d{2}$/.test(startTime || '')) return null
+  const dt = new Date(`${date}T${startTime}:00`)
+  if (Number.isNaN(dt.getTime())) return null
+  return dt
+}
+
+export function isScheduleInPast(schedule, now = new Date()) {
+  const startAt = parseScheduleStartDateTime(schedule)
+  if (!startAt) return false
+  return startAt.getTime() < now.getTime()
+}
+
 /**
  * Đổi trạng thái lịch hẹn + đồng bộ currentSlot (admin / bác sĩ, trừ luồng hủy dùng cancelAppointmentAndReleaseSlot).
  */
@@ -205,6 +222,9 @@ export async function bookAppointmentAtomic(payload) {
   } = payload
 
   let schedule = await fetchScheduleById(scheduleId)
+  if (isScheduleInPast(schedule)) {
+    return { ok: false, error: 'Không thể đặt lịch trong quá khứ' }
+  }
   if (Number(schedule.currentSlot) >= Number(schedule.maxSlot)) {
     return { ok: false, error: 'Lịch này đã đầy' }
   }

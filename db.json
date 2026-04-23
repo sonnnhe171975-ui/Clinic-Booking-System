@@ -2535,7 +2535,7 @@
       "date": "2026-04-23",
       "time": "12:50-15:00",
       "maxSlot": 4,
-      "currentSlot": 0,
+      "currentSlot": 1,
       "status": "available",
       "room": "C302",
       "fee": 300000
@@ -23485,6 +23485,19 @@
       "status": "pending",
       "createdAt": "2026-04-22T07:17:37.164Z",
       "id": "1232"
+    },
+    {
+      "id": "d1uWGFICzR8",
+      "userId": 3,
+      "doctorId": 3,
+      "scheduleId": 224,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "dạ dày bị viêm",
+      "status": "pending",
+      "createdAt": "2026-04-23T08:44:07.682Z"
     }
   ],
   "users": [
@@ -23667,6 +23680,16 @@
       "email": "phamminhd@clinicbooking.vn",
       "phone": "0905778899",
       "address": "22 Phan Chau Trinh, Hai Chau, Da Nang"
+    },
+    {
+      "fullName": "Maihuyen",
+      "email": "maihuyen@gmail.com",
+      "username": "maihuyen1204",
+      "phone": "0912322323",
+      "address": "hà nội",
+      "role": "admin",
+      "password": "123456",
+      "id": "uuFIiZpEdxo"
     }
   ],
   "notifications": [
@@ -23702,6 +23725,45 @@
       "isRead": false,
       "relatedId": "1",
       "createdAt": "2026-04-22T08:10:00.000Z"
+    },
+    {
+      "userId": "13",
+      "role": "doctor",
+      "type": "pending_appointment",
+      "title": "Tran Thi Hoa vừa đăng ký lịch",
+      "subtitle": "Lịch #d1uWGFICzR8 - ca #224",
+      "body": "Có lịch hẹn mới chờ xác nhận",
+      "relatedId": "d1uWGFICzR8",
+      "to": "/doctor?appointmentId=d1uWGFICzR8",
+      "isRead": false,
+      "createdAt": "2026-04-23T08:44:07.723Z",
+      "id": "VIqLTy-iID8"
+    },
+    {
+      "userId": "1",
+      "role": "admin",
+      "type": "admin_pending",
+      "title": "Lịch mới chờ duyệt #d1uWGFICzR8",
+      "subtitle": "Tran Thi Hoa -> BS #3",
+      "body": "Có lịch hẹn chờ bác sĩ xác nhận",
+      "relatedId": "d1uWGFICzR8",
+      "to": "/admin/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T08:44:07.724Z",
+      "id": "Cc4i-nwp8_Y"
+    },
+    {
+      "userId": "uuFIiZpEdxo",
+      "role": "admin",
+      "type": "admin_pending",
+      "title": "Lịch mới chờ duyệt #d1uWGFICzR8",
+      "subtitle": "Tran Thi Hoa -> BS #3",
+      "body": "Có lịch hẹn chờ bác sĩ xác nhận",
+      "relatedId": "d1uWGFICzR8",
+      "to": "/admin/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T08:44:07.724Z",
+      "id": "Etf7QYFTcrQ"
     }
   ],
   "medicalRecords": [
@@ -23818,6 +23880,19 @@
         "username": "doctor4"
       },
       "createdAt": "2026-04-22T07:40:00.000Z"
+    },
+    {
+      "actorId": "3",
+      "actorRole": "patient",
+      "action": "appointment_created",
+      "resourceType": "appointments",
+      "resourceId": "d1uWGFICzR8",
+      "metadata": {
+        "doctorId": 3,
+        "scheduleId": 224
+      },
+      "createdAt": "2026-04-23T08:44:07.711Z",
+      "id": "8XMHT6uZbAk"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
