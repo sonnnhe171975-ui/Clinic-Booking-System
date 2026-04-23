@@ -291,7 +291,7 @@
       "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 5,
-      "currentSlot": 4,
+      "currentSlot": 3,
       "status": "available",
       "room": "B202",
       "fee": 220000
@@ -335,7 +335,7 @@
       "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 4,
-      "currentSlot": 3,
+      "currentSlot": 2,
       "status": "available",
       "room": "C302",
       "fee": 300000
@@ -368,7 +368,7 @@
       "date": "2026-04-24",
       "time": "15:30-17:40",
       "maxSlot": 4,
-      "currentSlot": 3,
+      "currentSlot": 2,
       "status": "available",
       "room": "C302",
       "fee": 300000
@@ -1413,7 +1413,7 @@
       "date": "2026-05-02",
       "time": "15:30-17:40",
       "maxSlot": 4,
-      "currentSlot": 1,
+      "currentSlot": 0,
       "status": "available",
       "room": "B201",
       "fee": 220000
@@ -1446,7 +1446,7 @@
       "date": "2026-05-02",
       "time": "12:50-15:00",
       "maxSlot": 5,
-      "currentSlot": 1,
+      "currentSlot": 2,
       "status": "available",
       "room": "C303",
       "fee": 300000
@@ -1523,7 +1523,7 @@
       "date": "2026-05-03",
       "time": "10:00-12:20",
       "maxSlot": 4,
-      "currentSlot": 3,
+      "currentSlot": 2,
       "status": "available",
       "room": "A101",
       "fee": 250000
@@ -1534,7 +1534,7 @@
       "date": "2026-05-03",
       "time": "12:50-15:00",
       "maxSlot": 5,
-      "currentSlot": 2,
+      "currentSlot": 3,
       "status": "available",
       "room": "A102",
       "fee": 250000
@@ -1567,7 +1567,7 @@
       "date": "2026-04-25",
       "time": "07:00-10:00",
       "maxSlot": 5,
-      "currentSlot": 2,
+      "currentSlot": 3,
       "status": "available",
       "room": "AUTO-2",
       "fee": 250000
@@ -1589,7 +1589,7 @@
       "date": "2026-04-25",
       "time": "12:50-15:00",
       "maxSlot": 5,
-      "currentSlot": 2,
+      "currentSlot": 3,
       "status": "available",
       "room": "AUTO-3",
       "fee": 250000
@@ -2247,7 +2247,7 @@
       "address": "59 Le Loi, Thanh Khe, Da Nang",
       "note": "Ho kéo dài, sốt nhẹ",
       "createdAt": "2026-04-07T14:22:00.000Z",
-      "status": "confirmed"
+      "status": "cancelled"
     },
     {
       "id": "47",
@@ -2364,7 +2364,7 @@
       "address": "59 Le Loi, Thanh Khe, Da Nang",
       "note": "Nổi mề đay 1 tuần",
       "createdAt": "2026-04-07T15:25:00.000Z",
-      "status": "confirmed"
+      "status": "cancelled"
     },
     {
       "id": "56",
@@ -2481,7 +2481,7 @@
       "address": "59 Le Loi, Thanh Khe, Da Nang",
       "note": "Tư vấn dinh dưỡng",
       "createdAt": "2026-04-07T08:28:00.000Z",
-      "status": "confirmed"
+      "status": "cancelled"
     },
     {
       "id": "65",
@@ -4353,7 +4353,7 @@
       "address": "59 Le Loi, Thanh Khe, Da Nang",
       "note": "Mất ngủ, căng thẳng",
       "createdAt": "2026-04-15T08:16:00.000Z",
-      "status": "confirmed"
+      "status": "cancelled"
     },
     {
       "id": "209",
@@ -4587,7 +4587,7 @@
       "address": "59 Le Loi, Thanh Khe, Da Nang",
       "note": "Ho kéo dài, sốt nhẹ",
       "createdAt": "2026-04-16T10:22:00.000Z",
-      "status": "confirmed"
+      "status": "cancelled"
     },
     {
       "id": "227",
@@ -4874,6 +4874,71 @@
       "note": "dau bụng",
       "status": "confirmed",
       "createdAt": "2026-04-23T09:10:28.584Z"
+    },
+    {
+      "id": "Zf4Q7eV11I0",
+      "userId": 3,
+      "doctorId": 1,
+      "scheduleId": 134,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "Ho kéo dài, sốt nhẹ",
+      "status": "cancelled",
+      "createdAt": "2026-04-23T09:17:10.022Z"
+    },
+    {
+      "id": "ExxbFCx3ALU",
+      "userId": 3,
+      "doctorId": 1,
+      "scheduleId": 133,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "Ho kéo dài, sốt nhẹ",
+      "status": "pending",
+      "createdAt": "2026-04-23T09:17:21.052Z"
+    },
+    {
+      "id": "6tSW0ZGKpdw",
+      "userId": 3,
+      "doctorId": 2,
+      "scheduleId": 136,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "Mất ngủ, căng thẳng",
+      "status": "pending",
+      "createdAt": "2026-04-23T09:45:23.935Z"
+    },
+    {
+      "id": "76CLfcbfd0g",
+      "userId": 3,
+      "doctorId": 3,
+      "scheduleId": 125,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "Tư vấn dinh dưỡng",
+      "status": "pending",
+      "createdAt": "2026-04-23T09:45:45.806Z"
+    },
+    {
+      "id": "hh56cA0Irqs",
+      "userId": 3,
+      "doctorId": 3,
+      "scheduleId": 139,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "Nổi mề đay 1 tuần",
+      "status": "pending",
+      "createdAt": "2026-04-23T09:45:56.029Z"
     }
   ],
   "users": [
@@ -5021,6 +5086,214 @@
       "isRead": false,
       "createdAt": "2026-04-23T09:12:56.670Z",
       "id": "2bdFNy1l2DI"
+    },
+    {
+      "userId": "5",
+      "role": "doctor",
+      "type": "pending_appointment",
+      "title": "Tran Thi Hoa vừa đăng ký lịch",
+      "subtitle": "Lịch #Zf4Q7eV11I0 - ca #134",
+      "body": "Có lịch hẹn mới chờ xác nhận",
+      "relatedId": "Zf4Q7eV11I0",
+      "to": "/doctor?appointmentId=Zf4Q7eV11I0",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:17:10.047Z",
+      "id": "H5VBySBccbM"
+    },
+    {
+      "userId": "1",
+      "role": "admin",
+      "type": "admin_pending",
+      "title": "Lịch mới chờ duyệt #Zf4Q7eV11I0",
+      "subtitle": "Tran Thi Hoa -> BS #1",
+      "body": "Có lịch hẹn chờ bác sĩ xác nhận",
+      "relatedId": "Zf4Q7eV11I0",
+      "to": "/admin/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:17:10.047Z",
+      "id": "pXGQUKNml_A"
+    },
+    {
+      "userId": "3",
+      "role": "patient",
+      "type": "appointment_status",
+      "title": "Lịch #226 cập nhật trạng thái",
+      "subtitle": "Trạng thái mới: cancelled",
+      "body": "Vui lòng kiểm tra lịch hẹn của bạn",
+      "relatedId": "226",
+      "to": "/patient/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:17:10.074Z",
+      "id": "PybXfml0Zd4"
+    },
+    {
+      "userId": "5",
+      "role": "doctor",
+      "type": "pending_appointment",
+      "title": "Tran Thi Hoa vừa đăng ký lịch",
+      "subtitle": "Lịch #ExxbFCx3ALU - ca #133",
+      "body": "Có lịch hẹn mới chờ xác nhận",
+      "relatedId": "ExxbFCx3ALU",
+      "to": "/doctor?appointmentId=ExxbFCx3ALU",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:17:21.075Z",
+      "id": "YlCCI0mnQBI"
+    },
+    {
+      "userId": "1",
+      "role": "admin",
+      "type": "admin_pending",
+      "title": "Lịch mới chờ duyệt #ExxbFCx3ALU",
+      "subtitle": "Tran Thi Hoa -> BS #1",
+      "body": "Có lịch hẹn chờ bác sĩ xác nhận",
+      "relatedId": "ExxbFCx3ALU",
+      "to": "/admin/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:17:21.075Z",
+      "id": "hvP5AzL1kG8"
+    },
+    {
+      "userId": "3",
+      "role": "patient",
+      "type": "appointment_status",
+      "title": "Lịch #Zf4Q7eV11I0 cập nhật trạng thái",
+      "subtitle": "Trạng thái mới: cancelled",
+      "body": "Vui lòng kiểm tra lịch hẹn của bạn",
+      "relatedId": "Zf4Q7eV11I0",
+      "to": "/patient/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:17:21.099Z",
+      "id": "FIWNUGe9Vhg"
+    },
+    {
+      "userId": "6",
+      "role": "doctor",
+      "type": "pending_appointment",
+      "title": "Tran Thi Hoa vừa đăng ký lịch",
+      "subtitle": "Lịch #6tSW0ZGKpdw - ca #136",
+      "body": "Có lịch hẹn mới chờ xác nhận",
+      "relatedId": "6tSW0ZGKpdw",
+      "to": "/doctor?appointmentId=6tSW0ZGKpdw",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:45:23.967Z",
+      "id": "5_ioi0riA38"
+    },
+    {
+      "userId": "1",
+      "role": "admin",
+      "type": "admin_pending",
+      "title": "Lịch mới chờ duyệt #6tSW0ZGKpdw",
+      "subtitle": "Tran Thi Hoa -> BS #2",
+      "body": "Có lịch hẹn chờ bác sĩ xác nhận",
+      "relatedId": "6tSW0ZGKpdw",
+      "to": "/admin/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:45:23.967Z",
+      "id": "80VrvGlv4LE"
+    },
+    {
+      "userId": "3",
+      "role": "patient",
+      "type": "appointment_status",
+      "title": "Lịch #208 cập nhật trạng thái",
+      "subtitle": "Trạng thái mới: cancelled",
+      "body": "Vui lòng kiểm tra lịch hẹn của bạn",
+      "relatedId": "208",
+      "to": "/patient/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:45:23.996Z",
+      "id": "gDOcTX7pHxY"
+    },
+    {
+      "userId": "13",
+      "role": "doctor",
+      "type": "pending_appointment",
+      "title": "Tran Thi Hoa vừa đăng ký lịch",
+      "subtitle": "Lịch #76CLfcbfd0g - ca #125",
+      "body": "Có lịch hẹn mới chờ xác nhận",
+      "relatedId": "76CLfcbfd0g",
+      "to": "/doctor?appointmentId=76CLfcbfd0g",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:45:45.830Z",
+      "id": "OFMOSc2-w-E"
+    },
+    {
+      "userId": "1",
+      "role": "admin",
+      "type": "admin_pending",
+      "title": "Lịch mới chờ duyệt #76CLfcbfd0g",
+      "subtitle": "Tran Thi Hoa -> BS #3",
+      "body": "Có lịch hẹn chờ bác sĩ xác nhận",
+      "relatedId": "76CLfcbfd0g",
+      "to": "/admin/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:45:45.831Z",
+      "id": "drS-2DSzkF8"
+    },
+    {
+      "userId": "3",
+      "role": "patient",
+      "type": "appointment_status",
+      "title": "Lịch #64 cập nhật trạng thái",
+      "subtitle": "Trạng thái mới: cancelled",
+      "body": "Vui lòng kiểm tra lịch hẹn của bạn",
+      "relatedId": "64",
+      "to": "/patient/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:45:45.856Z",
+      "id": "denh-LC9zb8"
+    },
+    {
+      "userId": "13",
+      "role": "doctor",
+      "type": "pending_appointment",
+      "title": "Tran Thi Hoa vừa đăng ký lịch",
+      "subtitle": "Lịch #hh56cA0Irqs - ca #139",
+      "body": "Có lịch hẹn mới chờ xác nhận",
+      "relatedId": "hh56cA0Irqs",
+      "to": "/doctor?appointmentId=hh56cA0Irqs",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:45:56.060Z",
+      "id": "HtkcG1UaBrw"
+    },
+    {
+      "userId": "1",
+      "role": "admin",
+      "type": "admin_pending",
+      "title": "Lịch mới chờ duyệt #hh56cA0Irqs",
+      "subtitle": "Tran Thi Hoa -> BS #3",
+      "body": "Có lịch hẹn chờ bác sĩ xác nhận",
+      "relatedId": "hh56cA0Irqs",
+      "to": "/admin/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:45:56.060Z",
+      "id": "B_zfuRhjHh0"
+    },
+    {
+      "userId": "3",
+      "role": "patient",
+      "type": "appointment_status",
+      "title": "Lịch #55 cập nhật trạng thái",
+      "subtitle": "Trạng thái mới: cancelled",
+      "body": "Vui lòng kiểm tra lịch hẹn của bạn",
+      "relatedId": "55",
+      "to": "/patient/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:45:56.090Z",
+      "id": "pMs1veTcFak"
+    },
+    {
+      "userId": "3",
+      "role": "patient",
+      "type": "appointment_status",
+      "title": "Lịch #46 cập nhật trạng thái",
+      "subtitle": "Trạng thái mới: cancelled",
+      "body": "Vui lòng kiểm tra lịch hẹn của bạn",
+      "relatedId": "46",
+      "to": "/patient/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T10:00:56.961Z",
+      "id": "OW-09aaIRFw"
     }
   ],
   "medicalRecords": [
@@ -5112,6 +5385,149 @@
       },
       "createdAt": "2026-04-23T09:12:56.671Z",
       "id": "JmE6GZGCHBs"
+    },
+    {
+      "actorId": "3",
+      "actorRole": "patient",
+      "action": "appointment_created",
+      "resourceType": "appointments",
+      "resourceId": "Zf4Q7eV11I0",
+      "metadata": {
+        "doctorId": 1,
+        "scheduleId": 134
+      },
+      "createdAt": "2026-04-23T09:17:10.039Z",
+      "id": "AvFrQIjirfU"
+    },
+    {
+      "actorId": "system",
+      "actorRole": "system",
+      "action": "appointment_status_changed",
+      "resourceType": "appointments",
+      "resourceId": "226",
+      "metadata": {
+        "from": "confirmed",
+        "to": "cancelled"
+      },
+      "createdAt": "2026-04-23T09:17:10.074Z",
+      "id": "og_NX53M480"
+    },
+    {
+      "actorId": "3",
+      "actorRole": "patient",
+      "action": "appointment_created",
+      "resourceType": "appointments",
+      "resourceId": "ExxbFCx3ALU",
+      "metadata": {
+        "doctorId": 1,
+        "scheduleId": 133
+      },
+      "createdAt": "2026-04-23T09:17:21.066Z",
+      "id": "e2Y2DEux43M"
+    },
+    {
+      "actorId": "system",
+      "actorRole": "system",
+      "action": "appointment_status_changed",
+      "resourceType": "appointments",
+      "resourceId": "Zf4Q7eV11I0",
+      "metadata": {
+        "from": "pending",
+        "to": "cancelled"
+      },
+      "createdAt": "2026-04-23T09:17:21.100Z",
+      "id": "O-jyXuj4_wc"
+    },
+    {
+      "actorId": "3",
+      "actorRole": "patient",
+      "action": "appointment_created",
+      "resourceType": "appointments",
+      "resourceId": "6tSW0ZGKpdw",
+      "metadata": {
+        "doctorId": 2,
+        "scheduleId": 136
+      },
+      "createdAt": "2026-04-23T09:45:23.957Z",
+      "id": "4jh1I_Jty_A"
+    },
+    {
+      "actorId": "system",
+      "actorRole": "system",
+      "action": "appointment_status_changed",
+      "resourceType": "appointments",
+      "resourceId": "208",
+      "metadata": {
+        "from": "confirmed",
+        "to": "cancelled"
+      },
+      "createdAt": "2026-04-23T09:45:23.997Z",
+      "id": "3GV5nOJzKpA"
+    },
+    {
+      "actorId": "3",
+      "actorRole": "patient",
+      "action": "appointment_created",
+      "resourceType": "appointments",
+      "resourceId": "76CLfcbfd0g",
+      "metadata": {
+        "doctorId": 3,
+        "scheduleId": 125
+      },
+      "createdAt": "2026-04-23T09:45:45.822Z",
+      "id": "vwzTKUlGZoc"
+    },
+    {
+      "actorId": "system",
+      "actorRole": "system",
+      "action": "appointment_status_changed",
+      "resourceType": "appointments",
+      "resourceId": "64",
+      "metadata": {
+        "from": "confirmed",
+        "to": "cancelled"
+      },
+      "createdAt": "2026-04-23T09:45:45.856Z",
+      "id": "H61BMHN5eLs"
+    },
+    {
+      "actorId": "3",
+      "actorRole": "patient",
+      "action": "appointment_created",
+      "resourceType": "appointments",
+      "resourceId": "hh56cA0Irqs",
+      "metadata": {
+        "doctorId": 3,
+        "scheduleId": 139
+      },
+      "createdAt": "2026-04-23T09:45:56.051Z",
+      "id": "4k_G_o5qRlI"
+    },
+    {
+      "actorId": "system",
+      "actorRole": "system",
+      "action": "appointment_status_changed",
+      "resourceType": "appointments",
+      "resourceId": "55",
+      "metadata": {
+        "from": "confirmed",
+        "to": "cancelled"
+      },
+      "createdAt": "2026-04-23T09:45:56.090Z",
+      "id": "GRvZLrjikPY"
+    },
+    {
+      "actorId": "system",
+      "actorRole": "system",
+      "action": "appointment_status_changed",
+      "resourceType": "appointments",
+      "resourceId": "46",
+      "metadata": {
+        "from": "confirmed",
+        "to": "cancelled"
+      },
+      "createdAt": "2026-04-23T10:00:56.962Z",
+      "id": "Twwa5mwOskQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

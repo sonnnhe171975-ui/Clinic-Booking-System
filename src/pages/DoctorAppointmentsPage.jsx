@@ -296,7 +296,7 @@ function DoctorAppointmentsPage() {
               disabled={busy}
               onClick={() =>
                 runDoctorAction(item.id, (raw) =>
-                  updateAppointmentStatus(raw, APPOINTMENT_STATUS.CONFIRMED)
+                  updateAppointmentStatus(raw, APPOINTMENT_STATUS.CONFIRMED, 'doctor')
                 )
               }
             >
@@ -307,7 +307,7 @@ function DoctorAppointmentsPage() {
                 variant="outline-danger"
                 disabled={busy}
                 onClick={() =>
-                  runDoctorAction(item.id, (raw) => cancelAppointment(raw))
+                  runDoctorAction(item.id, (raw) => cancelAppointment(raw, 'doctor'))
                 }
               >
                 Từ chối (trả slot)
@@ -322,7 +322,7 @@ function DoctorAppointmentsPage() {
               disabled={busy}
               onClick={() =>
                 runDoctorAction(item.id, (raw) =>
-                    updateAppointmentStatus(raw, APPOINTMENT_STATUS.CHECKED_IN)
+                    updateAppointmentStatus(raw, APPOINTMENT_STATUS.CHECKED_IN, 'doctor')
                 )
               }
             >
@@ -334,7 +334,7 @@ function DoctorAppointmentsPage() {
                 disabled={busy}
                 onClick={() =>
                   runDoctorAction(item.id, (raw) =>
-                    updateAppointmentStatus(raw, APPOINTMENT_STATUS.NO_SHOW)
+                    updateAppointmentStatus(raw, APPOINTMENT_STATUS.NO_SHOW, 'doctor')
                   )
                 }
               >
@@ -346,7 +346,7 @@ function DoctorAppointmentsPage() {
                 variant="outline-danger"
                 disabled={busy}
                 onClick={() =>
-                  runDoctorAction(item.id, (raw) => cancelAppointment(raw))
+                  runDoctorAction(item.id, (raw) => cancelAppointment(raw, 'doctor'))
                 }
               >
                 Hủy lịch (trả slot)
@@ -360,7 +360,7 @@ function DoctorAppointmentsPage() {
             disabled={busy}
             onClick={() =>
               runDoctorAction(item.id, (raw) =>
-                updateAppointmentStatus(raw, APPOINTMENT_STATUS.COMPLETED)
+                updateAppointmentStatus(raw, APPOINTMENT_STATUS.COMPLETED, 'doctor')
               )
             }
           >

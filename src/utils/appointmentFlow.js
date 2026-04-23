@@ -1,6 +1,7 @@
 import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import { APPOINTMENT_STATUS, isTerminalAppointmentStatus } from '../constants/appointmentStatus'
+import { canTransitionAppointmentStatus } from './permissions'
 
 async function getUsers() {
   return api.get(endpoints.users)
@@ -138,10 +139,16 @@ export function isScheduleInPast(schedule, now = new Date()) {
 /**
  * Đổi trạng thái lịch hẹn + đồng bộ currentSlot (admin / bác sĩ, trừ luồng hủy dùng cancelAppointmentAndReleaseSlot).
  */
-export async function applyAppointmentStatusChange(appt, nextStatus) {
+export async function applyAppointmentStatusChange(appt, nextStatus, actorRole = 'system') {
   const old = appt.status || APPOINTMENT_STATUS.CONFIRMED
   if (old === nextStatus) {
     return { ok: true }
+  }
+  if (
+    actorRole !== 'system' &&
+    !canTransitionAppointmentStatus(actorRole, old, nextStatus)
+  ) {
+    return { ok: false, error: 'Bạn không có quyền chuyển trạng thái này' }
   }
   const delta = slotDeltaForStatusChange(old, nextStatus)
   if (delta > 0) {
@@ -222,6 +229,9 @@ export async function bookAppointmentAtomic(payload) {
   } = payload
 
   let schedule = await fetchScheduleById(scheduleId)
+  if (String(schedule.doctorId) !== String(doctorId)) {
+    return { ok: false, error: 'Lịch khám không thuộc bác sĩ đã chọn' }
+  }
   if (isScheduleInPast(schedule)) {
     return { ok: false, error: 'Không thể đặt lịch trong quá khứ' }
   }
@@ -278,7 +288,7 @@ export async function bookAppointmentAtomic(payload) {
 /**
  * Hủy lịch + trả slot (pending / confirmed / checked_in).
  */
-export async function cancelAppointmentAndReleaseSlot(appt) {
+export async function cancelAppointmentAndReleaseSlot(appt, actorRole = 'system') {
   const status = appt.status || APPOINTMENT_STATUS.CONFIRMED
   if (status === APPOINTMENT_STATUS.CANCELLED) {
     return { ok: true }
@@ -286,22 +296,27 @@ export async function cancelAppointmentAndReleaseSlot(appt) {
   if (isTerminalAppointmentStatus(status)) {
     return { ok: false, error: 'Không thể hủy lịch ở trạng thái này' }
   }
-  return applyAppointmentStatusChange(appt, APPOINTMENT_STATUS.CANCELLED)
+  return applyAppointmentStatusChange(appt, APPOINTMENT_STATUS.CANCELLED, actorRole)
 }
 
 /**
  * Đổi lịch: đặt ca mới trước, hủy ca cũ sau; nếu hủy cũ lỗi thì rollback ca mới.
  */
-export async function rescheduleAppointment(oldAppt, newScheduleId, bookingPayload) {
+export async function rescheduleAppointment(
+  oldAppt,
+  newScheduleId,
+  bookingPayload,
+  actorRole = 'patient'
+) {
   const bookRes = await bookAppointmentAtomic({
     ...bookingPayload,
     scheduleId: newScheduleId,
   })
   if (!bookRes.ok) return bookRes
 
-  const cancelRes = await cancelAppointmentAndReleaseSlot(oldAppt)
+  const cancelRes = await cancelAppointmentAndReleaseSlot(oldAppt, actorRole)
   if (!cancelRes.ok) {
-    const rollback = await cancelAppointmentAndReleaseSlot(bookRes.appointment)
+    const rollback = await cancelAppointmentAndReleaseSlot(bookRes.appointment, 'system')
     if (!rollback.ok) {
       return {
         ok: false,

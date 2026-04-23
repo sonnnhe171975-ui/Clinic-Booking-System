@@ -31,6 +31,39 @@ export function canAdminUpdateAppointmentStatus() {
   return true
 }
 
+export function canTransitionAppointmentStatus(role, currentStatus, nextStatus) {
+  const current = currentStatus || APPOINTMENT_STATUS.CONFIRMED
+  if (!nextStatus || current === nextStatus) return false
+
+  const strictFlow = {
+    [APPOINTMENT_STATUS.PENDING]: [APPOINTMENT_STATUS.CONFIRMED, APPOINTMENT_STATUS.CANCELLED],
+    [APPOINTMENT_STATUS.CONFIRMED]: [
+      APPOINTMENT_STATUS.CHECKED_IN,
+      APPOINTMENT_STATUS.NO_SHOW,
+      APPOINTMENT_STATUS.CANCELLED,
+    ],
+    [APPOINTMENT_STATUS.CHECKED_IN]: [APPOINTMENT_STATUS.COMPLETED],
+    [APPOINTMENT_STATUS.CANCELLED]: [],
+    [APPOINTMENT_STATUS.COMPLETED]: [],
+    [APPOINTMENT_STATUS.NO_SHOW]: [],
+  }
+
+  // Admin/doctor đi theo luồng chặt để tránh nhảy trạng thái không thực tế.
+  if (role === 'admin' || role === 'doctor') {
+    return (strictFlow[current] || []).includes(nextStatus)
+  }
+
+  // Patient chỉ được hủy ở trạng thái còn xử lý.
+  if (role === 'patient') {
+    return (
+      nextStatus === APPOINTMENT_STATUS.CANCELLED &&
+      (current === APPOINTMENT_STATUS.PENDING || current === APPOINTMENT_STATUS.CONFIRMED)
+    )
+  }
+
+  return false
+}
+
 export function canPatientBookAppointment(role) {
   return role === 'patient'
 }

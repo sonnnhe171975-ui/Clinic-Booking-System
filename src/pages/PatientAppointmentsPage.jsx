@@ -20,6 +20,7 @@ import {
   changeAppointmentSchedule,
   getAppointmentById,
 } from '../services/appointmentService'
+import { isScheduleInPast } from '../utils/appointmentFlow'
 import { canPatientManageAppointmentStatus } from '../utils/permissions'
 
 function PatientAppointmentsPage() {
@@ -67,6 +68,7 @@ function PatientAppointmentsPage() {
     return schedules.filter((s) => {
       if (String(s.doctorId) !== String(rescheduleTarget.doctorId)) return false
       if (String(s.id) === String(rescheduleTarget.scheduleId)) return false
+      if (isScheduleInPast(s)) return false
       return Number(s.currentSlot) < Number(s.maxSlot)
     })
   }, [schedules, rescheduleTarget])
@@ -107,7 +109,7 @@ function PatientAppointmentsPage() {
     setBusyId(item.id)
     try {
       const raw = await getAppointmentById(item.id)
-      const res = await cancelAppointment(raw)
+      const res = await cancelAppointment(raw, 'patient')
       if (!res.ok) {
         toast.error(res.error || 'Không thể hủy')
         return
@@ -126,15 +128,20 @@ function PatientAppointmentsPage() {
     setBusyId(rescheduleTarget.id)
     try {
       const raw = await getAppointmentById(rescheduleTarget.id)
-      const res = await changeAppointmentSchedule(raw, Number(newScheduleId), {
-        userId: user.id,
-        doctorId: raw.doctorId,
-        patientName: raw.patientName || user.fullName,
-        phone: raw.phone,
-        email: raw.email || user.email || '',
-        address: raw.address || user.address || '',
-        note: raw.note || '',
-      })
+      const res = await changeAppointmentSchedule(
+        raw,
+        Number(newScheduleId),
+        {
+          userId: user.id,
+          doctorId: raw.doctorId,
+          patientName: raw.patientName || user.fullName,
+          phone: raw.phone,
+          email: raw.email || user.email || '',
+          address: raw.address || user.address || '',
+          note: raw.note || '',
+        },
+        'patient'
+      )
       if (!res.ok) {
         toast.error(res.error || 'Đổi lịch thất bại')
         return

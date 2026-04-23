@@ -15,7 +15,7 @@ import {
 } from '../constants/appointmentStatus'
 import { useClientTableView } from '../hooks/useClientTableView'
 import { getAppointmentById, getAllAppointments, updateAppointmentStatus } from '../services/appointmentService'
-import { canAdminUpdateAppointmentStatus } from '../utils/permissions'
+import { canAdminUpdateAppointmentStatus, canTransitionAppointmentStatus } from '../utils/permissions'
 import { joinSearchParts, scheduleDateFromString } from '../utils/tableMeta'
 
 function AdminAppointmentsPage() {
@@ -100,10 +100,14 @@ function AdminAppointmentsPage() {
       toast.info('Chọn trạng thái khác trước khi cập nhật')
       return
     }
+    if (!canTransitionAppointmentStatus('admin', current, next)) {
+      toast.error('Trạng thái chuyển không hợp lệ theo workflow')
+      return
+    }
     setBusyId(item.id)
     try {
       const raw = await getAppointmentById(item.id)
-      const res = await updateAppointmentStatus(raw, next)
+      const res = await updateAppointmentStatus(raw, next, 'admin')
       if (!res.ok) {
         toast.error(res.error || 'Không thể cập nhật')
         return
@@ -166,6 +170,9 @@ function AdminAppointmentsPage() {
               <tbody>
                 {tableView.pageRows.map((item, rowIdx) => {
                   const st = item.status || APPOINTMENT_STATUS.CONFIRMED
+                  const rowOptions = optionList.filter((opt) =>
+                    canTransitionAppointmentStatus('admin', st, opt.value)
+                  )
                   const selected = draftStatus[item.id] ?? st
                   const unchanged = selected === st
                   const sch = schedules.find((s) => String(s.id) === String(item.scheduleId))
@@ -190,7 +197,7 @@ function AdminAppointmentsPage() {
                       <td style={{ minWidth: '11rem' }}>
                         <Form.Select
                           size="sm"
-                          value={selected}
+                          value={rowOptions.some((opt) => opt.value === selected) ? selected : ''}
                           disabled={busyId === item.id}
                           onChange={(e) =>
                             setDraftStatus((prev) => ({
@@ -199,7 +206,10 @@ function AdminAppointmentsPage() {
                             }))
                           }
                         >
-                          {optionList.map((opt) => (
+                          <option value="" disabled>
+                            — Chọn trạng thái —
+                          </option>
+                          {rowOptions.map((opt) => (
                             <option key={opt.value} value={opt.value}>
                               {opt.label}
                             </option>
@@ -210,7 +220,7 @@ function AdminAppointmentsPage() {
                         <Button
                           size="sm"
                           variant="primary"
-                          disabled={busyId === item.id || unchanged}
+                          disabled={busyId === item.id || unchanged || rowOptions.length === 0}
                           onClick={() => onUpdateStatus(item)}
                         >
                           Cập nhật

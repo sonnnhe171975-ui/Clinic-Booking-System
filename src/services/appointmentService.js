@@ -23,14 +23,19 @@ export async function bookAppointment(payload) {
   return bookAppointmentAtomic(payload)
 }
 
-export async function cancelAppointment(appt) {
-  return cancelAppointmentAndReleaseSlot(appt)
+export async function cancelAppointment(appt, actorRole = 'system') {
+  return cancelAppointmentAndReleaseSlot(appt, actorRole)
 }
 
-export async function updateAppointmentStatus(appt, nextStatus) {
-  return applyAppointmentStatusChange(appt, nextStatus)
+export async function updateAppointmentStatus(appt, nextStatus, actorRole = 'system') {
+  return applyAppointmentStatusChange(appt, nextStatus, actorRole)
 }
 
-export async function changeAppointmentSchedule(oldAppt, newScheduleId, bookingPayload) {
-  return rescheduleAppointment(oldAppt, newScheduleId, bookingPayload)
+export async function changeAppointmentSchedule(
+  oldAppt,
+  newScheduleId,
+  bookingPayload,
+  actorRole = 'patient'
+) {
+  return rescheduleAppointment(oldAppt, newScheduleId, bookingPayload, actorRole)
 }
