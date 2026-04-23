@@ -79,7 +79,7 @@
     {
       "id": "1",
       "doctorId": 1,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -90,7 +90,7 @@
     {
       "id": "2",
       "doctorId": 1,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -101,7 +101,7 @@
     {
       "id": "3",
       "doctorId": 1,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 0,
@@ -112,7 +112,7 @@
     {
       "id": "4",
       "doctorId": 1,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -123,18 +123,18 @@
     {
       "id": "5",
       "doctorId": 2,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 4,
-      "currentSlot": 3,
-      "status": "available",
+      "currentSlot": 4,
+      "status": "full",
       "room": "B201",
       "fee": 220000
     },
     {
       "id": "6",
       "doctorId": 2,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -145,7 +145,7 @@
     {
       "id": "7",
       "doctorId": 2,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -156,7 +156,7 @@
     {
       "id": "8",
       "doctorId": 3,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -167,7 +167,7 @@
     {
       "id": "9",
       "doctorId": 3,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 2,
@@ -178,7 +178,7 @@
     {
       "id": "10",
       "doctorId": 3,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -189,7 +189,7 @@
     {
       "id": "11",
       "doctorId": 3,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "15:30-17:40",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -200,7 +200,7 @@
     {
       "id": "12",
       "doctorId": 4,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -211,7 +211,7 @@
     {
       "id": "13",
       "doctorId": 4,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -222,7 +222,7 @@
     {
       "id": "14",
       "doctorId": 4,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -233,7 +233,7 @@
     {
       "id": "15",
       "doctorId": 4,
-      "date": "2026-04-06",
+      "date": "2026-04-24",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -244,7 +244,7 @@
     {
       "id": "16",
       "doctorId": 1,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -255,7 +255,7 @@
     {
       "id": "17",
       "doctorId": 1,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -266,7 +266,7 @@
     {
       "id": "18",
       "doctorId": 1,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -277,7 +277,7 @@
     {
       "id": "19",
       "doctorId": 1,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "15:30-17:40",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -288,7 +288,7 @@
     {
       "id": "20",
       "doctorId": 2,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -299,7 +299,7 @@
     {
       "id": "21",
       "doctorId": 2,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -310,7 +310,7 @@
     {
       "id": "22",
       "doctorId": 2,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 0,
@@ -321,7 +321,7 @@
     {
       "id": "23",
       "doctorId": 2,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -332,7 +332,7 @@
     {
       "id": "24",
       "doctorId": 3,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -343,7 +343,7 @@
     {
       "id": "25",
       "doctorId": 3,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -354,7 +354,7 @@
     {
       "id": "26",
       "doctorId": 3,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -365,7 +365,7 @@
     {
       "id": "27",
       "doctorId": 3,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "15:30-17:40",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -376,7 +376,7 @@
     {
       "id": "28",
       "doctorId": 4,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -387,7 +387,7 @@
     {
       "id": "29",
       "doctorId": 4,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 2,
@@ -398,7 +398,7 @@
     {
       "id": "30",
       "doctorId": 4,
-      "date": "2026-04-07",
+      "date": "2026-04-24",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -409,7 +409,7 @@
     {
       "id": "31",
       "doctorId": 1,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 2,
@@ -420,7 +420,7 @@
     {
       "id": "32",
       "doctorId": 1,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 0,
@@ -431,7 +431,7 @@
     {
       "id": "33",
       "doctorId": 1,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -442,7 +442,7 @@
     {
       "id": "34",
       "doctorId": 2,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -453,7 +453,7 @@
     {
       "id": "35",
       "doctorId": 2,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -464,7 +464,7 @@
     {
       "id": "36",
       "doctorId": 2,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 0,
@@ -475,7 +475,7 @@
     {
       "id": "37",
       "doctorId": 2,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "15:30-17:40",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -486,7 +486,7 @@
     {
       "id": "38",
       "doctorId": 3,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 0,
@@ -497,7 +497,7 @@
     {
       "id": "39",
       "doctorId": 3,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -508,7 +508,7 @@
     {
       "id": "40",
       "doctorId": 3,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 0,
@@ -519,7 +519,7 @@
     {
       "id": "41",
       "doctorId": 3,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 0,
@@ -530,7 +530,7 @@
     {
       "id": "42",
       "doctorId": 4,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -541,7 +541,7 @@
     {
       "id": "43",
       "doctorId": 4,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 0,
@@ -552,7 +552,7 @@
     {
       "id": "44",
       "doctorId": 4,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -563,7 +563,7 @@
     {
       "id": "45",
       "doctorId": 4,
-      "date": "2026-04-08",
+      "date": "2026-04-25",
       "time": "15:30-17:40",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -574,7 +574,7 @@
     {
       "id": "46",
       "doctorId": 1,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -585,7 +585,7 @@
     {
       "id": "47",
       "doctorId": 1,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 3,
@@ -596,7 +596,7 @@
     {
       "id": "48",
       "doctorId": 1,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 4,
@@ -607,7 +607,7 @@
     {
       "id": "49",
       "doctorId": 1,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -618,7 +618,7 @@
     {
       "id": "50",
       "doctorId": 2,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 2,
@@ -629,7 +629,7 @@
     {
       "id": "51",
       "doctorId": 2,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -640,7 +640,7 @@
     {
       "id": "52",
       "doctorId": 2,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 3,
@@ -651,7 +651,7 @@
     {
       "id": "53",
       "doctorId": 2,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "15:30-17:40",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -662,7 +662,7 @@
     {
       "id": "54",
       "doctorId": 3,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -673,7 +673,7 @@
     {
       "id": "55",
       "doctorId": 3,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -684,7 +684,7 @@
     {
       "id": "56",
       "doctorId": 3,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -695,7 +695,7 @@
     {
       "id": "57",
       "doctorId": 4,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -706,7 +706,7 @@
     {
       "id": "58",
       "doctorId": 4,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -717,7 +717,7 @@
     {
       "id": "59",
       "doctorId": 4,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 0,
@@ -728,7 +728,7 @@
     {
       "id": "60",
       "doctorId": 4,
-      "date": "2026-04-09",
+      "date": "2026-04-26",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -739,7 +739,7 @@
     {
       "id": "61",
       "doctorId": 1,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -750,7 +750,7 @@
     {
       "id": "62",
       "doctorId": 1,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 0,
@@ -761,7 +761,7 @@
     {
       "id": "63",
       "doctorId": 1,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 2,
@@ -772,7 +772,7 @@
     {
       "id": "64",
       "doctorId": 1,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "15:30-17:40",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -783,7 +783,7 @@
     {
       "id": "65",
       "doctorId": 2,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 2,
@@ -794,7 +794,7 @@
     {
       "id": "66",
       "doctorId": 2,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -805,7 +805,7 @@
     {
       "id": "67",
       "doctorId": 2,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -816,7 +816,7 @@
     {
       "id": "68",
       "doctorId": 2,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 2,
@@ -827,7 +827,7 @@
     {
       "id": "69",
       "doctorId": 3,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 2,
@@ -838,7 +838,7 @@
     {
       "id": "70",
       "doctorId": 3,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 2,
@@ -849,7 +849,7 @@
     {
       "id": "71",
       "doctorId": 3,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -860,7 +860,7 @@
     {
       "id": "72",
       "doctorId": 3,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "15:30-17:40",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -871,7 +871,7 @@
     {
       "id": "73",
       "doctorId": 4,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -882,7 +882,7 @@
     {
       "id": "74",
       "doctorId": 4,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -893,7 +893,7 @@
     {
       "id": "75",
       "doctorId": 4,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 2,
@@ -904,7 +904,7 @@
     {
       "id": "76",
       "doctorId": 4,
-      "date": "2026-04-10",
+      "date": "2026-04-27",
       "time": "15:30-17:40",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -915,7 +915,7 @@
     {
       "id": "77",
       "doctorId": 1,
-      "date": "2026-04-11",
+      "date": "2026-04-28",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -926,7 +926,7 @@
     {
       "id": "78",
       "doctorId": 1,
-      "date": "2026-04-11",
+      "date": "2026-04-28",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -937,7 +937,7 @@
     {
       "id": "79",
       "doctorId": 2,
-      "date": "2026-04-11",
+      "date": "2026-04-28",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -948,7 +948,7 @@
     {
       "id": "80",
       "doctorId": 2,
-      "date": "2026-04-11",
+      "date": "2026-04-28",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 3,
@@ -959,7 +959,7 @@
     {
       "id": "81",
       "doctorId": 3,
-      "date": "2026-04-11",
+      "date": "2026-04-28",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 3,
@@ -970,7 +970,7 @@
     {
       "id": "82",
       "doctorId": 3,
-      "date": "2026-04-11",
+      "date": "2026-04-28",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -981,7 +981,7 @@
     {
       "id": "83",
       "doctorId": 4,
-      "date": "2026-04-11",
+      "date": "2026-04-28",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 2,
@@ -992,7 +992,7 @@
     {
       "id": "84",
       "doctorId": 4,
-      "date": "2026-04-11",
+      "date": "2026-04-28",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -1003,7 +1003,7 @@
     {
       "id": "85",
       "doctorId": 1,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -1014,7 +1014,7 @@
     {
       "id": "86",
       "doctorId": 1,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -1025,7 +1025,7 @@
     {
       "id": "87",
       "doctorId": 1,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -1036,7 +1036,7 @@
     {
       "id": "88",
       "doctorId": 2,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -1047,7 +1047,7 @@
     {
       "id": "89",
       "doctorId": 2,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -1058,7 +1058,7 @@
     {
       "id": "90",
       "doctorId": 2,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -1069,7 +1069,7 @@
     {
       "id": "91",
       "doctorId": 2,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -1080,7 +1080,7 @@
     {
       "id": "92",
       "doctorId": 3,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -1091,7 +1091,7 @@
     {
       "id": "93",
       "doctorId": 3,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -1102,7 +1102,7 @@
     {
       "id": "94",
       "doctorId": 3,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -1113,7 +1113,7 @@
     {
       "id": "95",
       "doctorId": 3,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "15:30-17:40",
       "maxSlot": 4,
       "currentSlot": 2,
@@ -1124,7 +1124,7 @@
     {
       "id": "96",
       "doctorId": 4,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -1135,7 +1135,7 @@
     {
       "id": "97",
       "doctorId": 4,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 0,
@@ -1146,7 +1146,7 @@
     {
       "id": "98",
       "doctorId": 4,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 4,
@@ -1157,7 +1157,7 @@
     {
       "id": "99",
       "doctorId": 4,
-      "date": "2026-04-13",
+      "date": "2026-04-30",
       "time": "15:30-17:40",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -1168,7 +1168,7 @@
     {
       "id": "100",
       "doctorId": 1,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 0,
@@ -1179,7 +1179,7 @@
     {
       "id": "101",
       "doctorId": 1,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 0,
@@ -1190,7 +1190,7 @@
     {
       "id": "102",
       "doctorId": 1,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -1201,7 +1201,7 @@
     {
       "id": "103",
       "doctorId": 1,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "15:30-17:40",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -1212,7 +1212,7 @@
     {
       "id": "104",
       "doctorId": 2,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -1223,7 +1223,7 @@
     {
       "id": "105",
       "doctorId": 2,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -1234,7 +1234,7 @@
     {
       "id": "106",
       "doctorId": 2,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 0,
@@ -1245,7 +1245,7 @@
     {
       "id": "107",
       "doctorId": 2,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "15:30-17:40",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -1256,7 +1256,7 @@
     {
       "id": "108",
       "doctorId": 3,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 0,
@@ -1267,7 +1267,7 @@
     {
       "id": "109",
       "doctorId": 3,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -1278,7 +1278,7 @@
     {
       "id": "110",
       "doctorId": 3,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -1289,7 +1289,7 @@
     {
       "id": "111",
       "doctorId": 4,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -1300,7 +1300,7 @@
     {
       "id": "112",
       "doctorId": 4,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 0,
@@ -1311,7 +1311,7 @@
     {
       "id": "113",
       "doctorId": 4,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -1322,7 +1322,7 @@
     {
       "id": "114",
       "doctorId": 4,
-      "date": "2026-04-14",
+      "date": "2026-05-01",
       "time": "15:30-17:40",
       "maxSlot": 4,
       "currentSlot": 2,
@@ -1333,7 +1333,7 @@
     {
       "id": "115",
       "doctorId": 1,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -1344,7 +1344,7 @@
     {
       "id": "116",
       "doctorId": 1,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -1355,7 +1355,7 @@
     {
       "id": "117",
       "doctorId": 1,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 2,
@@ -1366,7 +1366,7 @@
     {
       "id": "118",
       "doctorId": 1,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -1377,7 +1377,7 @@
     {
       "id": "119",
       "doctorId": 2,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "07:00-10:00",
       "maxSlot": 4,
       "currentSlot": 0,
@@ -1388,7 +1388,7 @@
     {
       "id": "120",
       "doctorId": 2,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "10:00-12:20",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -1399,7 +1399,7 @@
     {
       "id": "121",
       "doctorId": 2,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "12:50-15:00",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -1410,7 +1410,7 @@
     {
       "id": "122",
       "doctorId": 2,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "15:30-17:40",
       "maxSlot": 4,
       "currentSlot": 1,
@@ -1421,7 +1421,7 @@
     {
       "id": "123",
       "doctorId": 3,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -1432,7 +1432,7 @@
     {
       "id": "124",
       "doctorId": 3,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -1443,7 +1443,7 @@
     {
       "id": "125",
       "doctorId": 3,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -1454,7 +1454,7 @@
     {
       "id": "126",
       "doctorId": 3,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "15:30-17:40",
       "maxSlot": 3,
       "currentSlot": 1,
@@ -1465,7 +1465,7 @@
     {
       "id": "127",
       "doctorId": 4,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -1476,7 +1476,7 @@
     {
       "id": "128",
       "doctorId": 4,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "10:00-12:20",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -1487,7 +1487,7 @@
     {
       "id": "129",
       "doctorId": 4,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "12:50-15:00",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -1498,7 +1498,7 @@
     {
       "id": "130",
       "doctorId": 4,
-      "date": "2026-04-15",
+      "date": "2026-05-02",
       "time": "15:30-17:40",
       "maxSlot": 5,
       "currentSlot": 1,
@@ -1509,7 +1509,7 @@
     {
       "id": "131",
       "doctorId": 1,
-      "date": "2026-04-16",
+      "date": "2026-05-03",
       "time": "07:00-10:00",
       "maxSlot": 3,
       "currentSlot": 2,
@@ -1520,7 +1520,7 @@
     {
       "id": "132",
       "doctorId": 1,
-      "date": "2026-04-16",
+      "date": "2026-05-03",
       "time": "10:00-12:20",
       "maxSlot": 4,
       "currentSlot": 3,
@@ -1531,7 +1531,7 @@
     {
       "id": "133",
       "doctorId": 1,
-      "date": "2026-04-16",
+      "date": "2026-05-03",
       "time": "12:50-15:00",
       "maxSlot": 5,
       "currentSlot": 2,
@@ -1542,7 +1542,7 @@
     {
       "id": "134",
       "doctorId": 1,
-      "date": "2026-04-16",
+      "date": "2026-05-03",
       "time": "15:30-17:40",
       "maxSlot": 3,
       "currentSlot": 0,
@@ -1553,13 +1553,101 @@
     {
       "id": "135",
       "doctorId": 2,
-      "date": "2026-04-16",
+      "date": "2026-05-03",
       "time": "07:00-10:00",
       "maxSlot": 5,
       "currentSlot": 2,
       "status": "available",
       "room": "B205",
       "fee": 220000
+    },
+    {
+      "id": "136",
+      "doctorId": 2,
+      "date": "2026-04-25",
+      "time": "07:00-10:00",
+      "maxSlot": 5,
+      "currentSlot": 2,
+      "status": "available",
+      "room": "AUTO-2",
+      "fee": 250000
+    },
+    {
+      "id": "137",
+      "doctorId": 2,
+      "date": "2026-04-25",
+      "time": "10:00-12:20",
+      "maxSlot": 5,
+      "currentSlot": 2,
+      "status": "available",
+      "room": "AUTO-2",
+      "fee": 250000
+    },
+    {
+      "id": "139",
+      "doctorId": 3,
+      "date": "2026-04-25",
+      "time": "12:50-15:00",
+      "maxSlot": 5,
+      "currentSlot": 2,
+      "status": "available",
+      "room": "AUTO-3",
+      "fee": 250000
+    },
+    {
+      "id": "140",
+      "doctorId": 3,
+      "date": "2026-04-25",
+      "time": "15:30-17:40",
+      "maxSlot": 5,
+      "currentSlot": 2,
+      "status": "available",
+      "room": "AUTO-3",
+      "fee": 250000
+    },
+    {
+      "id": "141",
+      "doctorId": 3,
+      "date": "2026-04-26",
+      "time": "07:00-10:00",
+      "maxSlot": 5,
+      "currentSlot": 1,
+      "status": "available",
+      "room": "AUTO-3",
+      "fee": 250000
+    },
+    {
+      "id": "143",
+      "doctorId": 4,
+      "date": "2026-04-26",
+      "time": "10:00-12:20",
+      "maxSlot": 5,
+      "currentSlot": 4,
+      "status": "available",
+      "room": "AUTO-4",
+      "fee": 250000
+    },
+    {
+      "id": "144",
+      "doctorId": 4,
+      "date": "2026-04-26",
+      "time": "12:50-15:00",
+      "maxSlot": 5,
+      "currentSlot": 2,
+      "status": "available",
+      "room": "AUTO-4",
+      "fee": 250000
+    },
+    {
+      "id": "145",
+      "doctorId": 4,
+      "date": "2026-04-26",
+      "time": "15:30-17:40",
+      "maxSlot": 5,
+      "currentSlot": 1,
+      "status": "available",
+      "room": "AUTO-4",
+      "fee": 250000
     }
   ],
   "appointments": [
@@ -4773,6 +4861,19 @@
       "note": "Đau bụng sau ăn",
       "createdAt": "2026-04-16T15:49:00.000Z",
       "status": "confirmed"
+    },
+    {
+      "id": "eVzhL4H3lJw",
+      "userId": 3,
+      "doctorId": 2,
+      "scheduleId": 5,
+      "patientName": "Tran Thi Hoa",
+      "phone": "0935123456",
+      "email": "tranhoa@gmail.com",
+      "address": "59 Le Loi, Thanh Khe, Da Nang",
+      "note": "dau bụng",
+      "status": "confirmed",
+      "createdAt": "2026-04-23T09:10:28.584Z"
     }
   ],
   "users": [
@@ -4813,6 +4914,50 @@
       "gender": "female",
       "underlyingConditions": "Di ung penicillin",
       "medicalHistory": "03/2026: Viem hong cap, ke don khang sinh 5 ngay, het trieu chung. Khong tien su benh man tinh khac."
+    },
+    {
+      "id": "5",
+      "username": "doctor1",
+      "password": "123456",
+      "fullName": "BS Nguyen Van Chien",
+      "role": "doctor",
+      "doctorId": 1,
+      "email": "nguyenvana@clinicbooking.vn",
+      "phone": "0905123456",
+      "address": "123 Le Duan, Hai Chau, Da Nang"
+    },
+    {
+      "id": "6",
+      "username": "doctor2",
+      "password": "123456",
+      "fullName": "BS Tran Thi Anh",
+      "role": "doctor",
+      "doctorId": 2,
+      "email": "tranthib@clinicbooking.vn",
+      "phone": "0905345678",
+      "address": "88 Nguyen Van Linh, Da Nang"
+    },
+    {
+      "id": "13",
+      "username": "doctor3",
+      "password": "123456",
+      "fullName": "BS Le Van Cung",
+      "role": "doctor",
+      "doctorId": 3,
+      "email": "levanc@clinicbooking.vn",
+      "phone": "0905667788",
+      "address": "45 Hoang Dieu, Hai Chau, Da Nang"
+    },
+    {
+      "id": "14",
+      "username": "doctor4",
+      "password": "123456",
+      "fullName": "BS Pham Minh Duong",
+      "role": "doctor",
+      "doctorId": 4,
+      "email": "phamminhd@clinicbooking.vn",
+      "phone": "0905778899",
+      "address": "22 Phan Chau Trinh, Hai Chau, Da Nang"
     }
   ],
   "notifications": [
@@ -4837,6 +4982,45 @@
       "isRead": false,
       "relatedId": "1",
       "createdAt": "2026-04-22T08:05:00.000Z"
+    },
+    {
+      "userId": "6",
+      "role": "doctor",
+      "type": "pending_appointment",
+      "title": "Tran Thi Hoa vừa đăng ký lịch",
+      "subtitle": "Lịch #eVzhL4H3lJw - ca #5",
+      "body": "Có lịch hẹn mới chờ xác nhận",
+      "relatedId": "eVzhL4H3lJw",
+      "to": "/doctor?appointmentId=eVzhL4H3lJw",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:10:28.610Z",
+      "id": "0F3fFFiwNhs"
+    },
+    {
+      "userId": "1",
+      "role": "admin",
+      "type": "admin_pending",
+      "title": "Lịch mới chờ duyệt #eVzhL4H3lJw",
+      "subtitle": "Tran Thi Hoa -> BS #2",
+      "body": "Có lịch hẹn chờ bác sĩ xác nhận",
+      "relatedId": "eVzhL4H3lJw",
+      "to": "/admin/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:10:28.610Z",
+      "id": "nJ93TQu3vCs"
+    },
+    {
+      "userId": "3",
+      "role": "patient",
+      "type": "appointment_status",
+      "title": "Lịch #eVzhL4H3lJw cập nhật trạng thái",
+      "subtitle": "Trạng thái mới: confirmed",
+      "body": "Vui lòng kiểm tra lịch hẹn của bạn",
+      "relatedId": "eVzhL4H3lJw",
+      "to": "/patient/appointments",
+      "isRead": false,
+      "createdAt": "2026-04-23T09:12:56.670Z",
+      "id": "2bdFNy1l2DI"
     }
   ],
   "medicalRecords": [
@@ -4902,6 +5086,32 @@
         "to": "confirmed"
       },
       "createdAt": "2026-04-20T09:05:00.000Z"
+    },
+    {
+      "actorId": "3",
+      "actorRole": "patient",
+      "action": "appointment_created",
+      "resourceType": "appointments",
+      "resourceId": "eVzhL4H3lJw",
+      "metadata": {
+        "doctorId": 2,
+        "scheduleId": 5
+      },
+      "createdAt": "2026-04-23T09:10:28.603Z",
+      "id": "gV7NekrJVl4"
+    },
+    {
+      "actorId": "system",
+      "actorRole": "system",
+      "action": "appointment_status_changed",
+      "resourceType": "appointments",
+      "resourceId": "eVzhL4H3lJw",
+      "metadata": {
+        "from": "pending",
+        "to": "confirmed"
+      },
+      "createdAt": "2026-04-23T09:12:56.671Z",
+      "id": "JmE6GZGCHBs"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

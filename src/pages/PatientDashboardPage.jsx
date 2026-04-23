@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Alert, Badge, Card, Col, Row, Table } from 'react-bootstrap'
+import { Alert, Badge, Button, Card, Col, Row, Table } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client'
 import { endpoints } from '../api/config'
@@ -13,11 +13,13 @@ import {
   appointmentStatusVariant,
 } from '../constants/appointmentStatus'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { useAppState } from '../state/useAppState'
 import { useClientTableView } from '../hooks/useClientTableView'
 import { joinSearchParts, scheduleDateFromString } from '../utils/tableMeta'
 
 function PatientDashboardPage() {
   const { user } = useAuthContext()
+  const { notifications, markNotificationAsRead, refreshNotifications } = useAppState()
   const [appointments, setAppointments] = useState([])
   const [schedules, setSchedules] = useState([])
   const [doctors, setDoctors] = useState([])
@@ -93,6 +95,15 @@ function PatientDashboardPage() {
     [appointments]
   )
 
+  const patientStatusNotifications = useMemo(
+    () =>
+      notifications
+        .filter((item) => item.type === 'appointment_status')
+        .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+        .slice(0, 6),
+    [notifications]
+  )
+
   return (
     <div>
       {error && <Alert variant="danger">{error}</Alert>}
@@ -124,6 +135,53 @@ function PatientDashboardPage() {
           </Card>
         </Col>
       </Row>
+
+      <Card className="med-card border-info-subtle mb-3">
+        <Card.Body>
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <Card.Title className="mb-0">Thông báo xác nhận lịch hẹn</Card.Title>
+            <div className="d-flex align-items-center gap-2">
+              <Badge bg={patientStatusNotifications.length ? 'info' : 'secondary'}>
+                {patientStatusNotifications.length}
+              </Badge>
+              <Button size="sm" variant="outline-secondary" onClick={() => refreshNotifications()}>
+                Làm mới
+              </Button>
+            </div>
+          </div>
+          {patientStatusNotifications.length === 0 ? (
+            <p className="small text-muted mb-0">
+              Chưa có thông báo xác nhận nào từ bác sĩ / quản trị.
+            </p>
+          ) : (
+            <div className="d-flex flex-column gap-2">
+              {patientStatusNotifications.map((item) => (
+                <div
+                  key={item.id}
+                  className="d-flex flex-wrap align-items-center justify-content-between gap-2 border rounded px-2 py-2"
+                >
+                  <div className="small">
+                    <div className="fw-semibold">{item.title}</div>
+                    <div className="text-muted">{item.subtitle || item.body}</div>
+                  </div>
+                  <div className="d-flex align-items-center gap-2">
+                    {!item.isRead && <Badge bg="primary">mới</Badge>}
+                    <Button
+                      as={Link}
+                      to={item.to || '/patient/appointments'}
+                      size="sm"
+                      variant="outline-primary"
+                      onClick={() => markNotificationAsRead(item.id)}
+                    >
+                      Xem chi tiết
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card.Body>
+      </Card>
 
       <Card className="med-card">
         <Card.Body>
