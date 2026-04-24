@@ -14,7 +14,13 @@ import {
   appointmentStatusVariant,
 } from '../constants/appointmentStatus'
 import { useClientTableView } from '../hooks/useClientTableView'
-import { getAppointmentById, getAllAppointments, updateAppointmentStatus } from '../services/appointmentService'
+import {
+  approveRescheduleRequest,
+  getAppointmentById,
+  getAllAppointments,
+  rejectRescheduleRequest,
+  updateAppointmentStatus,
+} from '../services/appointmentService'
 import { canAdminUpdateAppointmentStatus, canTransitionAppointmentStatus } from '../utils/permissions'
 import { joinSearchParts, scheduleDateFromString } from '../utils/tableMeta'
 
@@ -89,6 +95,47 @@ function AdminAppointmentsPage() {
 
   const tableView = useClientTableView(appointments, appointmentMeta)
 
+  function hasPendingReschedule(item) {
+    const v = item?.rescheduleToScheduleId
+    return v != null && String(v).trim() !== ''
+  }
+
+  async function onApproveReschedule(item) {
+    setBusyId(item.id)
+    try {
+      const raw = await getAppointmentById(item.id)
+      const res = await approveRescheduleRequest(raw)
+      if (!res.ok) {
+        toast.error(res.error || 'Không thể duyệt đổi lịch')
+        return
+      }
+      toast.success('Đã duyệt đổi lịch')
+      await reload()
+    } catch {
+      toast.error('Thất bại, vui lòng thử lại')
+    } finally {
+      setBusyId(null)
+    }
+  }
+
+  async function onRejectReschedule(item) {
+    setBusyId(item.id)
+    try {
+      const raw = await getAppointmentById(item.id)
+      const res = await rejectRescheduleRequest(raw)
+      if (!res.ok) {
+        toast.error(res.error || 'Không thể từ chối')
+        return
+      }
+      toast.info('Đã từ chối yêu cầu đổi lịch')
+      await reload()
+    } catch {
+      toast.error('Thất bại, vui lòng thử lại')
+    } finally {
+      setBusyId(null)
+    }
+  }
+
   async function onUpdateStatus(item) {
     if (!canAdminUpdateAppointmentStatus()) {
       toast.error('Bạn không có quyền cập nhật trạng thái lịch hẹn')
@@ -131,7 +178,9 @@ function AdminAppointmentsPage() {
         Chọn trạng thái mới rồi bấm <strong>Cập nhật</strong>. <strong>Đã hủy</strong> và{' '}
         <strong>Đã khám xong</strong> → <strong>trả slot</strong>; <strong>Không đến</strong> vẫn{' '}
         <strong>giữ slot</strong>; khi chuyển từ đã hủy sang trạng thái đang giữ chỗ, hệ thống{' '}
-        <strong>lấy slot</strong> nếu ca còn chỗ.
+        <strong>lấy slot</strong> nếu ca còn chỗ. Cột <strong>Yêu cầu đổi lịch</strong>: bệnh nhân
+        gửi ca mới; <strong>Duyệt</strong> thực hiện đổi (đặt ca mới, hủy ca cũ), <strong>Từ chối</strong>{' '}
+        xóa yêu cầu.
       </Alert>
       {error && <Alert variant="danger">{error}</Alert>}
       {loading ? (
@@ -165,6 +214,7 @@ function AdminAppointmentsPage() {
                   <th>Hiện tại</th>
                   <th>Đổi trạng thái</th>
                   <th>Cập nhật</th>
+                  <th>Yêu cầu đổi lịch</th>
                 </tr>
               </thead>
               <tbody>
@@ -176,6 +226,9 @@ function AdminAppointmentsPage() {
                   const selected = draftStatus[item.id] ?? st
                   const unchanged = selected === st
                   const sch = schedules.find((s) => String(s.id) === String(item.scheduleId))
+                  const pendingSch = hasPendingReschedule(item)
+                    ? schedules.find((s) => String(s.id) === String(item.rescheduleToScheduleId))
+                    : null
                   return (
                     <tr key={item.id}>
                       <td>{tableView.rowStt(rowIdx)}</td>
@@ -226,19 +279,46 @@ function AdminAppointmentsPage() {
                           Cập nhật
                         </Button>
                       </td>
+                      <td style={{ minWidth: '8.5rem' }}>
+                        {pendingSch ? (
+                          <div className="d-flex flex-column gap-1">
+                            <small className="text-muted">
+                              → {pendingSch.date} {pendingSch.time}
+                            </small>
+                            <Button
+                              size="sm"
+                              variant="success"
+                              disabled={busyId === item.id}
+                              onClick={() => onApproveReschedule(item)}
+                            >
+                              Duyệt
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline-secondary"
+                              disabled={busyId === item.id}
+                              onClick={() => onRejectReschedule(item)}
+                            >
+                              Từ chối
+                            </Button>
+                          </div>
+                        ) : (
+                          <span className="text-muted">—</span>
+                        )}
+                      </td>
                     </tr>
                   )
                 })}
                 {appointments.length === 0 && (
                   <tr>
-                    <td colSpan={11} className="text-center text-muted">
+                    <td colSpan={12} className="text-center text-muted">
                       Chưa có lịch hẹn nào
                     </td>
                   </tr>
                 )}
                 {appointments.length > 0 && tableView.pageRows.length === 0 && (
                   <tr>
-                    <td colSpan={11} className="text-center text-muted">
+                    <td colSpan={12} className="text-center text-muted">
                       Không có dòng nào khớp bộ lọc
                     </td>
                   </tr>

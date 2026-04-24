@@ -17,11 +17,16 @@ import { useClientTableView } from '../hooks/useClientTableView'
 import { joinSearchParts, scheduleDateFromString } from '../utils/tableMeta'
 import {
   cancelAppointment,
-  changeAppointmentSchedule,
   getAppointmentById,
+  submitPatientRescheduleRequest,
 } from '../services/appointmentService'
-import { isScheduleInPast } from '../utils/appointmentFlow'
+import { getOccupiedDatesForPatient, isScheduleInPast } from '../utils/appointmentFlow'
 import { canPatientManageAppointmentStatus } from '../utils/permissions'
+
+function appointmentHasPendingReschedule(item) {
+  const v = item?.rescheduleToScheduleId
+  return v != null && String(v).trim() !== ''
+}
 
 function PatientAppointmentsPage() {
   const { user } = useAuthContext()
@@ -63,20 +68,31 @@ function PatientAppointmentsPage() {
     return m
   }, [doctors])
 
+  const patientOccupiedDates = useMemo(
+    () => getOccupiedDatesForPatient(appointments, schedules, rescheduleTarget?.id),
+    [appointments, schedules, rescheduleTarget?.id]
+  )
+
   const rescheduleOptions = useMemo(() => {
     if (!rescheduleTarget) return []
     return schedules.filter((s) => {
       if (String(s.doctorId) !== String(rescheduleTarget.doctorId)) return false
       if (String(s.id) === String(rescheduleTarget.scheduleId)) return false
       if (isScheduleInPast(s)) return false
-      return Number(s.currentSlot) < Number(s.maxSlot)
+      if (Number(s.currentSlot) >= Number(s.maxSlot)) return false
+      const d = String(s.date || '').trim()
+      if (patientOccupiedDates.has(d)) return false
+      return true
     })
-  }, [schedules, rescheduleTarget])
+  }, [schedules, rescheduleTarget, patientOccupiedDates])
 
   const appointmentMeta = useMemo(
     () =>
       appointments.map((item) => {
         const sch = schedules.find((s) => String(s.id) === String(item.scheduleId))
+        const pendingSch = appointmentHasPendingReschedule(item)
+          ? schedules.find((s) => String(s.id) === String(item.rescheduleToScheduleId))
+          : null
         const doc = doctorById[String(item.doctorId)]
         const st = item.status || APPOINTMENT_STATUS.CONFIRMED
         const statusLabel = APPOINTMENT_STATUS_LABEL_VI[st] || st
@@ -90,6 +106,9 @@ function PatientAppointmentsPage() {
             sch?.time,
             sch?.room,
             statusLabel,
+            appointmentHasPendingReschedule(item) ? 'chờ duyệt đổi lịch' : '',
+            pendingSch?.date,
+            pendingSch?.time,
             item.patientName,
             user.fullName,
             item.phone,
@@ -127,31 +146,21 @@ function PatientAppointmentsPage() {
     if (!rescheduleTarget || !newScheduleId) return
     setBusyId(rescheduleTarget.id)
     try {
-      const raw = await getAppointmentById(rescheduleTarget.id)
-      const res = await changeAppointmentSchedule(
-        raw,
+      const res = await submitPatientRescheduleRequest(
+        rescheduleTarget.id,
         Number(newScheduleId),
-        {
-          userId: user.id,
-          doctorId: raw.doctorId,
-          patientName: raw.patientName || user.fullName,
-          phone: raw.phone,
-          email: raw.email || user.email || '',
-          address: raw.address || user.address || '',
-          note: raw.note || '',
-        },
-        'patient'
+        user.id
       )
       if (!res.ok) {
-        toast.error(res.error || 'Đổi lịch thất bại')
+        toast.error(res.error || 'Gửi yêu cầu thất bại')
         return
       }
-      toast.success('Đã đổi lịch thành công')
+      toast.success('Đã gửi yêu cầu đổi lịch. Vui lòng chờ quản trị duyệt.')
       setRescheduleTarget(null)
       setNewScheduleId('')
       await reload()
     } catch {
-      toast.error('Đổi lịch thất bại')
+      toast.error('Gửi yêu cầu thất bại')
     } finally {
       setBusyId(null)
     }
@@ -200,9 +209,16 @@ function PatientAppointmentsPage() {
                       <small className="text-muted">{sch?.time || '-'}</small>
                     </td>
                     <td>
-                      <Badge bg={appointmentStatusVariant(st)}>
-                        {APPOINTMENT_STATUS_LABEL_VI[st] || st}
-                      </Badge>
+                      <div className="d-flex flex-column gap-1 align-items-start">
+                        <Badge bg={appointmentStatusVariant(st)}>
+                          {APPOINTMENT_STATUS_LABEL_VI[st] || st}
+                        </Badge>
+                        {appointmentHasPendingReschedule(item) && (
+                          <Badge bg="info" className="fw-normal">
+                            Chờ duyệt đổi lịch
+                          </Badge>
+                        )}
+                      </div>
                     </td>
                     <td>{item.patientName || user.fullName}</td>
                     <td>{item.phone}</td>
@@ -217,17 +233,21 @@ function PatientAppointmentsPage() {
                           >
                             Hủy lịch
                           </Button>
-                          <Button
-                            size="sm"
-                            variant="outline-primary"
-                            disabled={busyId === item.id}
-                            onClick={() => {
-                              setRescheduleTarget(item)
-                              setNewScheduleId('')
-                            }}
-                          >
-                            Đổi lịch
-                          </Button>
+                          {appointmentHasPendingReschedule(item) ? (
+                            <span className="text-muted small">Đổi lịch: chờ duyệt</span>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="outline-primary"
+                              disabled={busyId === item.id}
+                              onClick={() => {
+                                setRescheduleTarget(item)
+                                setNewScheduleId('')
+                              }}
+                            >
+                              Đổi lịch
+                            </Button>
+                          )}
                         </div>
                       ) : (
                         <span className="text-muted small">—</span>
@@ -264,14 +284,15 @@ function PatientAppointmentsPage() {
 
       <Modal show={Boolean(rescheduleTarget)} onHide={() => setRescheduleTarget(null)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Đổi lịch hẹn</Modal.Title>
+          <Modal.Title>Xin đổi lịch hẹn</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {rescheduleTarget && (
             <>
               <p className="small text-muted">
-                Chọn ca trống cùng bác sĩ. Hệ thống giữ ca mới trước, sau đó hủy ca cũ (có hoàn tác
-                nếu lỗi).
+                Chọn ca trống cùng bác sĩ, <strong>không trùng ngày</strong> với lịch khác của bạn.
+                Yêu cầu được gửi tới quản trị; sau khi duyệt, hệ thống mới chuyển sang ca mới và hủy
+                ca cũ.
               </p>
               <Form.Group>
                 <Form.Label>Ca mới</Form.Label>
@@ -289,7 +310,8 @@ function PatientAppointmentsPage() {
               </Form.Group>
               {rescheduleOptions.length === 0 && (
                 <Alert variant="warning" className="mt-2 mb-0 small">
-                  Hiện không có ca trống cùng bác sĩ để đổi.
+                  Không có ca phù hợp: cần cùng bác sĩ, còn slot, chưa qua, và ngày không trùng lịch
+                  khác của bạn.
                 </Alert>
               )}
             </>
@@ -304,7 +326,7 @@ function PatientAppointmentsPage() {
             disabled={!newScheduleId || busyId || rescheduleOptions.length === 0}
             onClick={onConfirmReschedule}
           >
-            Xác nhận đổi lịch
+            Gửi yêu cầu đổi lịch
           </Button>
         </Modal.Footer>
       </Modal>

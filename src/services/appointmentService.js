@@ -2,8 +2,11 @@ import { api } from '../api/client'
 import { endpoints } from '../api/config'
 import {
   applyAppointmentStatusChange,
+  approveRescheduleRequest as approveRescheduleRequestFlow,
   bookAppointmentAtomic,
   cancelAppointmentAndReleaseSlot,
+  rejectRescheduleRequest as rejectRescheduleRequestFlow,
+  requestPatientReschedule,
   rescheduleAppointment,
 } from '../utils/appointmentFlow'
 
@@ -38,4 +41,17 @@ export async function changeAppointmentSchedule(
   actorRole = 'patient'
 ) {
   return rescheduleAppointment(oldAppt, newScheduleId, bookingPayload, actorRole)
+}
+
+/** Bệnh nhân gửi yêu cầu đổi lịch (chờ admin duyệt). */
+export async function submitPatientRescheduleRequest(apptId, newScheduleId, requesterUserId) {
+  return requestPatientReschedule(apptId, newScheduleId, requesterUserId)
+}
+
+export async function approveRescheduleRequest(appt) {
+  return approveRescheduleRequestFlow(appt, 'admin')
+}
+
+export async function rejectRescheduleRequest(appt) {
+  return rejectRescheduleRequestFlow(appt, 'admin')
 }
